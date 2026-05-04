@@ -4,293 +4,776 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Filler Piece — Managed Joinery Delivery</title>
-<meta name="description" content="The Filler Piece. One accountable partner. Site to sign-off."/>
+<meta name="description" content="The Filler Piece. One accountable interface. Site to sign-off."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
 <style>
-:root{
-  --black:#070707;--black-mid:#101010;--charcoal:#212121;
-  --gold:#c39d38;--gold-mid:#d4b054;--gold-pale:rgba(195,157,56,0.12);
-  --lime:#8ec63f;--forest:#116448;--red:#e21700;--purple:#662e91;
-  --white:#f4f1ec;--white-dim:#8a8880;--font-head:'Bebas Neue',sans-serif;
-  --font-body:'Syne',sans-serif;--font-mono:'Syne Mono',monospace;
-  --ease:cubic-bezier(0.16,1,0.3,1);
+/* ════════════════════════════════════════
+   TOKENS — TFP BRAND PALETTE
+════════════════════════════════════════ */
+:root {
+  --black:      #0e0e0e;
+  --off-black:  #141414;
+  --charcoal:   #212121;
+  --gold:       #c39d38;
+  --gold-mid:   #d4b054;
+  --gold-pale:  rgba(195,157,56,0.12);
+  --lime:       #8ec63f;
+  --forest:     #116448;
+  --red:        #e21700;
+  --purple:     #662e91;
+  --white:      #f4f1ec;
+  --white-dim:  #8a8880;
+  --white-faint:#2a2a28;
+  --font-head:  'Bebas Neue', sans-serif;
+  --font-body:  'Syne', sans-serif;
+  --font-mono:  'Syne Mono', monospace;
+  --ease:       cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ════════════════════════════════════════
+   RESET
+════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--black);overflow-x:hidden}
-body{font-family:var(--font-body);background:var(--black);color:var(--white);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--font-body);
+  background:var(--black);color:var(--white);
+  overflow-x:hidden;cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
 a{text-decoration:none;color:inherit;cursor:none}
 button{cursor:none;border:none;background:none;font-family:var(--font-body)}
 ::selection{background:var(--gold);color:var(--black)}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--gold)}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--gold)}
 
-/* CURSOR */
-#cd{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;left:0;top:0;transform:translate(-50%,-50%);mix-blend-mode:screen}
-#cr{position:fixed;width:48px;height:48px;border:1.5px solid rgba(195,157,56,0.55);border-radius:50%;pointer-events:none;z-index:99998;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;transition:width .4s var(--ease),height .4s var(--ease),background .3s,border-color .3s}
-#cl{font-family:var(--font-mono);font-size:.38rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .25s;white-space:nowrap}
-body.chov #cd{width:0;height:0;opacity:0}
-body.chov #cr{width:88px;height:88px;background:rgba(7,7,7,.88);border-color:var(--gold)}
-body.chov #cl{opacity:1}
-body.clnk #cr{width:60px;height:60px;border-color:var(--gold-mid)}
+/* ════════════════════════════════════════
+   CURSOR — GSAP STYLE
+════════════════════════════════════════ */
+#c-dot{
+  position:fixed;width:10px;height:10px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  left:0;top:0;transform:translate(-50%,-50%);
+}
+#c-ring{
+  position:fixed;width:48px;height:48px;
+  border:1.5px solid rgba(195,157,56,0.55);
+  border-radius:50%;pointer-events:none;z-index:99998;
+  left:0;top:0;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .3s,border-color .3s;
+}
+#c-label{
+  font-family:var(--font-mono);font-size:0.38rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);opacity:0;transition:opacity .25s;
+  white-space:nowrap;
+}
+body.c-hover #c-dot{transform:translate(-50%,-50%) scale(0)}
+body.c-hover #c-ring{width:88px;height:88px;background:rgba(14,14,14,.88);border-color:var(--gold)}
+body.c-hover #c-label{opacity:1}
+body.c-link #c-ring{width:60px;height:60px;border-color:var(--gold-mid)}
 
-/* GRAIN */
-#grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9995;opacity:.025;
-background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-animation:gn 7s steps(8) infinite}
-@keyframes gn{0%,100%{transform:translate(0,0)}10%{transform:translate(-3%,-2%)}20%{transform:translate(2%,3%)}30%{transform:translate(-2%,2%)}40%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}60%{transform:translate(2%,-3%)}70%{transform:translate(-3%,2%)}80%{transform:translate(3%,2%)}90%{transform:translate(-2%,-3%)}}
+/* ════════════════════════════════════════
+   GRAIN
+════════════════════════════════════════ */
+#grain{
+  position:fixed;inset:-50%;width:200%;height:200%;
+  pointer-events:none;z-index:9995;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:gn 7s steps(8) infinite;
+}
+@keyframes gn{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-3%,-2%)}
+  20%{transform:translate(2%,3%)}30%{transform:translate(-2%,2%)}
+  40%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}
+  60%{transform:translate(2%,-3%)}70%{transform:translate(-3%,2%)}
+  80%{transform:translate(3%,2%)}90%{transform:translate(-2%,-3%)}
+}
 
-/* WEBGL */
-#bgc{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55}
+/* ════════════════════════════════════════
+   WEBGL CANVAS
+════════════════════════════════════════ */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
 
-/* PAGE TRANSITION */
-#pt{position:fixed;inset:0;z-index:9000;background:var(--gold);clip-path:inset(0 0 100% 0);pointer-events:none}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.6rem 5%;transition:padding .5s var(--ease),background .4s}
-nav.stuck{padding:1rem 5%;background:rgba(7,7,7,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(195,157,56,.1)}
-.nl{font-family:var(--font-head);font-size:1.5rem;letter-spacing:.08em;color:var(--white);display:flex;align-items:center}
-.nl img{height:44px;width:44px;border-radius:50%;object-fit:cover}
-.nv{display:flex;align-items:center;gap:2.5rem;list-style:none}
-.nv a{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--white-dim);position:relative;transition:color .3s}
-.nv a:hover{color:var(--white)}
-.nv a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--gold);transition:width .4s var(--ease)}
-.nv a:hover::after{width:100%}
-.nc{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--black)!important;background:var(--gold);padding:.65rem 1.5rem;transition:background .3s!important}
-.nc::after{display:none!important}
-.nc:hover{background:var(--gold-mid)!important}
-.nb{display:none;flex-direction:column;gap:5px;padding:4px}
-.nb span{display:block;width:24px;height:1.5px;background:var(--white);transition:.3s}
-.nb.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.nb.open span:nth-child(2){opacity:0}
-.nb.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-#mob{position:fixed;inset:0;background:var(--black);z-index:490;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3rem;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem 5%;
+  mix-blend-mode:normal;
+  transition:padding .5s var(--ease),background .4s;
+}
+nav.stuck{
+  padding:1rem 5%;
+  background:rgba(14,14,14,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(195,157,56,.1);
+}
+.nav-logo{
+  font-family:var(--font-head);
+  font-size:1.5rem;letter-spacing:.08em;
+  color:var(--white);
+  display:flex;align-items:center;gap:.3rem;
+}
+.nav-logo .dot{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none}
+.nav-links a{
+  font-family:var(--font-body);
+  font-size:.68rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--white-dim);
+  position:relative;transition:color .3s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1.5px;background:var(--gold);
+  transition:width .4s var(--ease);
+}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  font-family:var(--font-body);
+  font-size:.65rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--black) !important;
+  background:var(--gold);
+  padding:.65rem 1.5rem;
+  transition:background .3s,transform .3s !important;
+}
+.nav-cta::after{display:none !important}
+.nav-cta:hover{background:var(--gold-mid) !important;transform:translateY(-2px) !important}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:4px}
+.nav-burger span{display:block;width:24px;height:1.5px;background:var(--white);transition:.3s}
+.nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+#mob{
+  position:fixed;inset:0;background:var(--black);z-index:490;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3rem;
+  opacity:0;pointer-events:none;transition:opacity .45s var(--ease);
+}
 #mob.open{opacity:1;pointer-events:all}
-#mob a{font-family:var(--font-head);font-size:clamp(2.5rem,8vw,5rem);letter-spacing:.05em;color:var(--white);transition:color .3s}
+#mob a{
+  font-family:var(--font-head);font-size:clamp(2.5rem,8vw,5rem);
+  letter-spacing:.05em;color:var(--white);
+  transition:color .3s;
+}
 #mob a:hover{color:var(--gold)}
-#mbc{position:absolute;top:2rem;right:5%;font-size:1.4rem;color:var(--white-dim)}
+#mob-close{
+  position:absolute;top:2rem;right:5%;
+  font-size:1.4rem;color:var(--white-dim);
+}
 
-/* PAGES */
+/* ════════════════════════════════════════
+   PAGE SYSTEM
+════════════════════════════════════════ */
 .page{display:none;position:relative;z-index:1}
 .page.active{display:block}
+#pt{
+  position:fixed;inset:0;z-index:9000;
+  background:var(--gold);
+  clip-path:inset(0 0 100% 0);
+  pointer-events:none;
+}
 
-/* HERO */
-.hero{min-height:100vh;display:grid;grid-template-rows:1fr auto;padding:8rem 5% 4rem;position:relative;overflow:hidden}
-.hero-top{display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:3rem}
-.htag{display:inline-flex;align-items:center;gap:.8rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:2.5rem;opacity:0;animation:fadeUp .7s var(--ease) .3s both}
-.htag::before{content:'';width:28px;height:1px;background:var(--gold)}
-.hh1{font-family:var(--font-head);font-size:clamp(5rem,14vw,13rem);line-height:.92;letter-spacing:.01em;color:var(--white)}
-.hline{display:block;opacity:0;transform:translateY(105%);animation:lineUp .9s var(--ease) both}
-.hline.gold{color:var(--gold)}
-.hline:nth-child(1){animation-delay:.4s}
-.hline:nth-child(2){animation-delay:.54s}
-.hline:nth-child(3){animation-delay:.68s}
+/* ════════════════════════════════════════
+   HERO — GSAP X WEBFLOW BIG TYPE STYLE
+════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-rows:1fr auto;
+  padding:8rem 5% 4rem;
+  position:relative;overflow:hidden;
+}
+.hero-top{
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:.8rem;
+  font-family:var(--font-mono);
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2.5rem;
+  opacity:0;animation:up .7s var(--ease) .3s both;
+}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.hero-h1{
+  font-family:var(--font-head);
+  font-size:clamp(5rem,14vw,13rem);
+  line-height:.92;letter-spacing:.01em;
+  color:var(--white);
+  overflow:hidden;
+}
+.hero-h1 .line{
+  display:block;overflow:hidden;
+  opacity:0;transform:translateY(105%);
+}
+.hero-h1 .line.gold{color:var(--gold)}
+.hero-h1 .line:nth-child(1){animation:lineUp .9s var(--ease) .4s both}
+.hero-h1 .line:nth-child(2){animation:lineUp .9s var(--ease) .52s both}
+.hero-h1 .line:nth-child(3){animation:lineUp .9s var(--ease) .64s both}
 @keyframes lineUp{to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-.hbot{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:2rem;padding-top:3rem;border-top:1px solid rgba(195,157,56,.15);opacity:0;animation:fadeUp .7s var(--ease) .9s both}
-.hdesc{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim);grid-column:1/3}
-.hbtns{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end}
-.btn-a{font-family:var(--font-body);font-size:.62rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--black);background:var(--gold);padding:.9rem 2rem;display:inline-block;transition:background .3s,transform .3s var(--ease);position:relative;overflow:hidden}
-.btn-a::before{content:'';position:absolute;inset:0;background:var(--gold-mid);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.hero-bottom{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  align-items:end;gap:2rem;
+  padding-top:3rem;
+  border-top:1px solid rgba(195,157,56,.15);
+  opacity:0;animation:up .7s var(--ease) .9s both;
+}
+.hero-desc{
+  font-size:.82rem;font-weight:400;line-height:1.85;
+  color:var(--white-dim);grid-column:1/3;
+}
+.hero-btns{
+  display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;
+}
+.btn-a{
+  font-family:var(--font-body);
+  font-size:.62rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--black);
+  background:var(--gold);padding:.9rem 2rem;
+  display:inline-block;
+  transition:background .3s,transform .3s var(--ease);
+  position:relative;overflow:hidden;
+}
+.btn-a::before{
+  content:'';position:absolute;inset:0;
+  background:var(--gold-mid);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
 .btn-a:hover::before{transform:scaleX(1)}
 .btn-a:hover{transform:translateY(-2px)}
 .btn-a span{position:relative;z-index:1}
-.btn-b{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white-dim);border-bottom:1px solid rgba(195,157,56,.3);padding-bottom:2px;transition:color .3s,border-color .3s}
+.btn-b{
+  font-family:var(--font-mono);
+  font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--white-dim);
+  border-bottom:1px solid rgba(195,157,56,.3);padding-bottom:2px;
+  transition:color .3s,border-color .3s;
+}
 .btn-b:hover{color:var(--gold);border-color:var(--gold)}
-.hstats{display:flex;flex-direction:column;gap:1rem}
-.stn{font-family:var(--font-head);font-size:2.8rem;color:var(--gold);line-height:1}
-.stl{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--white-dim)}
-.hscroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeUp .6s var(--ease) 1.2s both}
-.hscrollt{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--white-dim)}
-.hscrollb{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease-in-out infinite}
+.hero-stats{
+  display:flex;flex-direction:column;gap:1rem;
+}
+.stat-row{display:flex;align-items:baseline;gap:.6rem}
+.stat-n{
+  font-family:var(--font-head);font-size:2.8rem;
+  color:var(--gold);line-height:1;
+}
+.stat-l{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--white-dim);
+}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:0;animation:up .6s var(--ease) 1.2s both;
+}
+.hero-scroll-txt{
+  font-family:var(--font-mono);font-size:.52rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--white-dim);
+}
+.hero-scroll-bar{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:pulse 2s ease-in-out infinite;
+}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* MARQUEE */
-.strip{background:var(--gold);padding:.85rem 0;overflow:hidden}
-.str-t{display:flex;width:max-content;animation:mar 22s linear infinite}
-.str-t:hover{animation-play-state:paused}
+/* ════════════════════════════════════════
+   MARQUEE STRIP — GSAP STYLE
+════════════════════════════════════════ */
+.strip{
+  background:var(--gold);padding:.85rem 0;
+  overflow:hidden;
+}
+.strip-track{
+  display:flex;width:max-content;
+  animation:mar 22s linear infinite;
+}
+.strip-track:hover{animation-play-state:paused}
 @keyframes mar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.str-i{font-family:var(--font-head);font-size:1.1rem;letter-spacing:.1em;color:var(--black);padding:0 2.5rem;white-space:nowrap;display:flex;align-items:center;gap:2.5rem}
-.str-i::after{content:'✦';font-size:.7rem;opacity:.5}
+.strip-item{
+  font-family:var(--font-head);font-size:1.1rem;letter-spacing:.1em;
+  color:var(--black);padding:0 2.5rem;white-space:nowrap;
+  display:flex;align-items:center;gap:2.5rem;
+}
+.strip-item::after{content:'✦';font-size:.7rem;opacity:.5}
 
-/* SECTIONS */
-.sec{padding:7rem 5%;position:relative}
-.sec-dark{background:var(--black-mid)}
-.tag{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem}
+/* ════════════════════════════════════════
+   SECTIONS
+════════════════════════════════════════ */
+.sec{padding:8rem 5%;position:relative}
+.sec-dark{background:var(--off-black)}
+.sec-charcoal{background:var(--charcoal)}
+
+.tag{
+  font-family:var(--font-mono);
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:.8rem;
+}
 .tag::before{content:'';width:24px;height:1px;background:var(--gold)}
-.h2{font-family:var(--font-head);font-size:clamp(3rem,6vw,6rem);line-height:.95;letter-spacing:.01em;color:var(--white)}
+
+.h2{
+  font-family:var(--font-head);
+  font-size:clamp(3rem,6vw,6rem);
+  line-height:.95;letter-spacing:.01em;color:var(--white);
+}
 .h2 em{font-style:normal;color:var(--gold)}
-.bt{font-size:.85rem;font-weight:400;line-height:1.9;color:var(--white-dim);max-width:560px;margin-top:1.4rem}
+.h2 .green{color:var(--lime)}
+
+.body-txt{
+  font-size:.85rem;font-weight:400;line-height:1.9;
+  color:var(--white-dim);max-width:560px;
+  margin-top:1.4rem;
+}
 
 /* REVEAL */
-.rv{opacity:0;transform:translateY(36px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.rv{
+  opacity:0;transform:translateY(36px);
+  transition:opacity .85s var(--ease),transform .85s var(--ease);
+}
 .rv.in{opacity:1;transform:translateY(0)}
-.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}.rv.d5{transition-delay:.5s}
+.rv.d1{transition-delay:.1s}
+.rv.d2{transition-delay:.2s}
+.rv.d3{transition-delay:.3s}
+.rv.d4{transition-delay:.4s}
+.rv.d5{transition-delay:.5s}
 
-/* SERVICES LIST */
-.svc-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:3rem;align-items:start;padding:3rem 0;border-top:1px solid rgba(255,255,255,.07);position:relative;transition:background .3s,padding .3s}
-.svc-row:hover{background:var(--black-mid);padding-left:1rem;padding-right:1rem;margin:0 -1rem}
-.svc-num{font-family:var(--font-head);font-size:4.5rem;color:rgba(195,157,56,.18);line-height:1;transition:color .3s}
+/* ════════════════════════════════════════
+   SERVICES — BIG NUMBERED LIST (GSAP STYLE)
+════════════════════════════════════════ */
+.svc-list-wrap{margin-top:5rem}
+.svc-row{
+  display:grid;grid-template-columns:120px 1fr 1fr;
+  gap:3rem;align-items:start;
+  padding:3rem 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  cursor:none;
+  transition:background .3s;
+  position:relative;
+}
+.svc-row::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:1px;background:rgba(255,255,255,.07);
+}
+.svc-row:hover{padding-left:1rem;padding-right:1rem;margin:0 -1rem;background:var(--off-black)}
+.svc-num{
+  font-family:var(--font-head);font-size:4.5rem;
+  color:rgba(195,157,56,.18);line-height:1;
+  transition:color .3s;
+}
 .svc-row:hover .svc-num{color:rgba(195,157,56,.45)}
-.svc-name{font-family:var(--font-head);font-size:clamp(2rem,3.5vw,3rem);letter-spacing:.02em;color:var(--white);line-height:1;padding-top:.6rem;transition:color .3s}
+.svc-name{
+  font-family:var(--font-head);font-size:clamp(2rem,3.5vw,3rem);
+  letter-spacing:.02em;color:var(--white);line-height:1;
+  padding-top:.6rem;
+  transition:color .3s;
+}
 .svc-row:hover .svc-name{color:var(--gold)}
-.svc-desc{font-size:.82rem;font-weight:400;line-height:1.8;color:var(--white-dim);padding-top:.8rem}
-.svc-arr{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.2rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);transition:gap .3s var(--ease)}
-.svc-row:hover .svc-arr{gap:1.2rem}
+.svc-desc{
+  font-size:.82rem;font-weight:400;line-height:1.8;
+  color:var(--white-dim);padding-top:.8rem;
+}
+.svc-arrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  margin-top:1.2rem;
+  font-family:var(--font-mono);font-size:.6rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);transition:gap .3s var(--ease);
+}
+.svc-row:hover .svc-arrow{gap:1.2rem}
 
-/* SPLIT */
+/* ════════════════════════════════════════
+   COLOUR-CODED SERVICE STRIPS
+════════════════════════════════════════ */
+.colour-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.cs-item{
+  padding:4rem 2.5rem;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:280px;
+  transition:flex-grow .4s var(--ease);
+}
+.cs-item:hover{flex-grow:1.4}
+.cs-1{background:var(--charcoal)}
+.cs-2{background:var(--forest)}
+.cs-3{background:#1a1a2e}
+.cs-4{background:#2d1a00}
+.cs-num{
+  font-family:var(--font-head);font-size:5rem;
+  opacity:.12;line-height:1;
+}
+.cs-label{
+  font-family:var(--font-head);font-size:1.4rem;letter-spacing:.04em;
+}
+.cs-accent{width:30px;height:2px;margin-bottom:1rem}
+.cs-1 .cs-accent{background:var(--gold)}
+.cs-2 .cs-accent{background:var(--lime)}
+.cs-3 .cs-accent{background:var(--purple)}
+.cs-4 .cs-accent{background:var(--gold-mid)}
+
+/* ════════════════════════════════════════
+   SPLIT LAYOUT
+════════════════════════════════════════ */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
-.vis{position:relative;height:480px;border:1px solid rgba(195,157,56,.12)}
-.vis-i{position:absolute;inset:20px;border:1px solid rgba(195,157,56,.08);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;background:rgba(195,157,56,.025)}
-.vis-big{font-family:var(--font-head);font-size:clamp(2rem,5vw,4.5rem);color:var(--gold);text-align:center;line-height:1}
-.vis-sub{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--white-dim);text-align:center}
-.vis-dots{position:absolute;top:1rem;right:1rem;display:flex;gap:.4rem}
+.split-r{order:0}
+
+/* VISUAL BOX */
+.vis{
+  position:relative;height:480px;
+  border:1px solid rgba(195,157,56,.12);
+}
+.vis-inner{
+  position:absolute;inset:20px;
+  border:1px solid rgba(195,157,56,.08);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+  background:rgba(195,157,56,.025);
+}
+.vis-big{
+  font-family:var(--font-head);
+  font-size:clamp(2rem,5vw,4.5rem);
+  color:var(--gold);text-align:center;line-height:1;
+}
+.vis-sub{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--white-dim);text-align:center;
+}
+.vis-dots{
+  position:absolute;top:1rem;right:1rem;
+  display:flex;gap:.4rem;
+}
 .vis-dot{width:6px;height:6px;border-radius:50%}
 .vis-dot:nth-child(1){background:var(--red);opacity:.7}
 .vis-dot:nth-child(2){background:var(--gold);opacity:.7}
 .vis-dot:nth-child(3){background:var(--lime);opacity:.7}
 
 /* WHY POINTS */
-.wpts{display:flex;flex-direction:column;gap:2rem;margin-top:2.5rem}
-.wpt{display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem;border:1px solid transparent;transition:border-color .3s,background .3s}
-.wpt:hover{border-color:rgba(195,157,56,.2);background:var(--black-mid)}
-.wic{width:36px;height:36px;flex-shrink:0;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--gold);transition:background .3s}
-.wpt:hover .wic{background:var(--gold);color:var(--black)}
-.wph{font-family:var(--font-body);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white);margin-bottom:.4rem}
-.wpb{font-size:.8rem;font-weight:400;line-height:1.75;color:var(--white-dim)}
+.why-pts{display:flex;flex-direction:column;gap:2rem;margin-top:2.5rem}
+.why-pt{
+  display:flex;gap:1.5rem;align-items:flex-start;
+  padding:1.5rem;border:1px solid transparent;
+  transition:border-color .3s,background .3s;
+}
+.why-pt:hover{border-color:rgba(195,157,56,.2);background:var(--off-black)}
+.why-ic{
+  width:36px;height:36px;flex-shrink:0;
+  background:var(--gold-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--gold);
+  transition:background .3s;
+}
+.why-pt:hover .why-ic{background:var(--gold);color:var(--black)}
+.why-pt-h{
+  font-family:var(--font-body);font-size:.72rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--white);
+  margin-bottom:.4rem;
+}
+.why-pt-b{font-size:.8rem;font-weight:400;line-height:1.75;color:var(--white-dim)}
 
-/* CLIENT GRID */
-.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(195,157,56,.1);border:1px solid rgba(195,157,56,.1);margin-top:3.5rem}
-.cc{background:var(--black);padding:2.8rem 2rem;transition:background .3s}
-.cc:hover{background:var(--black-mid)}
-.cc-n{font-family:var(--font-head);font-size:3rem;color:rgba(195,157,56,.15);line-height:1;margin-bottom:.8rem;transition:color .3s}
-.cc:hover .cc-n{color:rgba(195,157,56,.4)}
-.cc-h{font-family:var(--font-head);font-size:1.15rem;letter-spacing:.04em;color:var(--white);margin-bottom:.6rem}
+/* ════════════════════════════════════════
+   CLIENT GRID
+════════════════════════════════════════ */
+.client-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:rgba(195,157,56,.1);
+  border:1px solid rgba(195,157,56,.1);
+  margin-top:3.5rem;
+}
+.cc{
+  background:var(--black);padding:2.8rem 2rem;
+  transition:background .3s;
+}
+.cc:hover{background:var(--off-black)}
+.cc-num{
+  font-family:var(--font-head);font-size:3rem;
+  color:rgba(195,157,56,.15);line-height:1;margin-bottom:.8rem;
+  transition:color .3s;
+}
+.cc:hover .cc-num{color:rgba(195,157,56,.4)}
+.cc-h{
+  font-family:var(--font-head);font-size:1.15rem;
+  letter-spacing:.04em;color:var(--white);margin-bottom:.6rem;
+}
 .cc-b{font-size:.75rem;font-weight:400;line-height:1.75;color:var(--white-dim)}
 
-/* CTA BAND */
-.cta{background:var(--gold);padding:7rem 5%;text-align:center;position:relative;overflow:hidden}
-.cta::before{content:'';position:absolute;inset:-100%;background:radial-gradient(ellipse at 60% 50%,rgba(255,255,255,.1) 0%,transparent 55%);pointer-events:none}
-.cta-h{font-family:var(--font-head);font-size:clamp(2.5rem,6vw,5.5rem);letter-spacing:.01em;color:var(--black);line-height:.95;margin-bottom:1.2rem;position:relative}
-.cta-s{font-size:.85rem;font-weight:400;color:rgba(7,7,7,.6);margin-bottom:2.5rem;position:relative}
-.btn-d{font-family:var(--font-body);font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);background:var(--black);padding:1rem 2.5rem;display:inline-block;transition:background .3s,transform .3s var(--ease)}
-.btn-d:hover{background:#1e1e1e;transform:translateY(-2px)}
+/* ════════════════════════════════════════
+   GOLD CTA BAND
+════════════════════════════════════════ */
+.cta{
+  background:var(--gold);padding:7rem 5%;
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:-100%;
+  background:radial-gradient(ellipse at 60% 50%,rgba(255,255,255,.1) 0%,transparent 55%);
+  pointer-events:none;
+}
+.cta-h{
+  font-family:var(--font-head);
+  font-size:clamp(2.5rem,6vw,5.5rem);
+  letter-spacing:.01em;color:var(--black);
+  line-height:.95;margin-bottom:1.2rem;
+  position:relative;
+}
+.cta-sub{
+  font-size:.85rem;font-weight:400;color:rgba(14,14,14,.6);
+  margin-bottom:2.5rem;position:relative;
+}
+.btn-dark{
+  font-family:var(--font-body);
+  font-size:.65rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);
+  background:var(--black);padding:1rem 2.5rem;
+  display:inline-block;position:relative;
+  transition:background .3s,transform .3s var(--ease);
+}
+.btn-dark:hover{background:#1e1e1e;transform:translateY(-2px)}
 
-/* PAGE HERO */
-.ph{min-height:55vh;display:flex;align-items:flex-end;padding:9rem 5% 4rem;border-bottom:1px solid rgba(195,157,56,.1);position:relative;overflow:hidden}
-.phg{position:absolute;right:-5%;top:0;width:55vw;height:55vw;background:radial-gradient(circle,rgba(195,157,56,.055) 0%,transparent 65%);pointer-events:none}
-.ph-h1{font-family:var(--font-head);font-size:clamp(3.5rem,8vw,8rem);line-height:.92;letter-spacing:.01em;color:var(--white)}
+/* ════════════════════════════════════════
+   PAGE HERO (inner pages)
+════════════════════════════════════════ */
+.ph{
+  min-height:55vh;display:flex;align-items:flex-end;
+  padding:9rem 5% 4rem;
+  border-bottom:1px solid rgba(195,157,56,.1);
+  position:relative;overflow:hidden;
+}
+.ph-glow{
+  position:absolute;right:-5%;top:0%;
+  width:55vw;height:55vw;
+  background:radial-gradient(circle,rgba(195,157,56,.055) 0%,transparent 65%);
+  pointer-events:none;
+}
+.ph-h1{
+  font-family:var(--font-head);
+  font-size:clamp(3.5rem,8vw,8rem);
+  line-height:.92;letter-spacing:.01em;color:var(--white);
+}
 .ph-h1 em{font-style:normal;color:var(--gold)}
 
-/* INFO BOX */
-.ib{background:var(--black-mid);border:1px solid rgba(195,157,56,.12);border-left:2px solid var(--gold);padding:2rem;margin-top:1.5rem}
-.ibl{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
-.ibb{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)}
+/* ════════════════════════════════════════
+   ABOUT PAGE
+════════════════════════════════════════ */
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(195,157,56,.1);border:1px solid rgba(195,157,56,.1);margin-top:3rem}
+.val-c{
+  background:var(--black);padding:2.5rem 2rem;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.val-c::before{
+  content:'';position:absolute;top:0;left:0;
+  width:0;height:2px;background:var(--gold);
+  transition:width .5s var(--ease);
+}
+.val-c:hover{background:var(--off-black)}
+.val-c:hover::before{width:100%}
+.val-h{font-family:var(--font-head);font-size:1.3rem;letter-spacing:.04em;color:var(--white);margin-bottom:.7rem}
+.val-b{font-size:.78rem;font-weight:400;line-height:1.8;color:var(--white-dim)}
 
-/* VALUE CARDS */
-.vc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(195,157,56,.1);border:1px solid rgba(195,157,56,.1);margin-top:3rem}
-.vci{background:var(--black);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background .3s}
-.vci::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .5s var(--ease)}
-.vci:hover{background:var(--black-mid)}
-.vci:hover::before{width:100%}
-.vch{font-family:var(--font-head);font-size:1.3rem;letter-spacing:.04em;color:var(--white);margin-bottom:.7rem}
-.vcb{font-size:.78rem;font-weight:400;line-height:1.8;color:var(--white-dim)}
+/* INLINE INFO BOX */
+.info-box{
+  background:var(--off-black);
+  border:1px solid rgba(195,157,56,.12);
+  border-left:2px solid var(--gold);
+  padding:2rem;margin-top:1.5rem;
+}
+.info-label{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.7rem;
+}
+.info-body{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)}
 
-/* SERVICE DETAIL */
-.sdg{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
-.sdl{list-style:none;margin-top:1.5rem}
-.sdl li{font-size:.82rem;font-weight:400;line-height:1.75;color:var(--white-dim);padding:.9rem 0;border-bottom:1px solid rgba(195,157,56,.07);display:flex;gap:1rem;align-items:flex-start}
-.sdl li::before{content:'—';color:var(--gold);flex-shrink:0}
+/* ════════════════════════════════════════
+   SERVICE DETAIL
+════════════════════════════════════════ */
+.sd-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.sd-list{list-style:none;margin-top:1.5rem}
+.sd-list li{
+  font-size:.82rem;font-weight:400;line-height:1.75;
+  color:var(--white-dim);padding:.9rem 0;
+  border-bottom:1px solid rgba(195,157,56,.07);
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.sd-list li::before{content:'—';color:var(--gold);flex-shrink:0}
 
-/* TIMELINE */
-.tl{margin-top:4rem;border-left:1px solid rgba(195,157,56,.2);padding-left:3.5rem}
-.tls{padding-bottom:3.5rem;position:relative}
-.tls::before{content:'';position:absolute;left:-3.5rem;top:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);transform:translateX(-3px);box-shadow:0 0 0 4px rgba(195,157,56,.15)}
-.tln{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
-.tlh{font-family:var(--font-head);font-size:1.6rem;letter-spacing:.02em;color:var(--white);margin-bottom:.8rem}
-.tlb{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim);max-width:560px}
+/* ════════════════════════════════════════
+   HOW WE WORK — TIMELINE
+════════════════════════════════════════ */
+.timeline{
+  margin-top:4rem;
+  border-left:1px solid rgba(195,157,56,.2);
+  padding-left:3.5rem;
+}
+.tl-step{padding-bottom:3.5rem;position:relative}
+.tl-step::before{
+  content:'';position:absolute;
+  left:-3.5rem;top:6px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold);transform:translateX(-3px);
+  box-shadow:0 0 0 4px rgba(195,157,56,.15);
+}
+.tl-n{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.tl-h{font-family:var(--font-head);font-size:1.6rem;letter-spacing:.02em;color:var(--white);margin-bottom:.8rem}
+.tl-b{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim);max-width:560px}
 
-/* WHO */
-.wr{display:grid;grid-template-columns:240px 1fr;gap:4rem;padding:3.5rem 0;border-bottom:1px solid rgba(195,157,56,.1);align-items:start}
-.wr:last-child{border-bottom:none}
-.wrh{font-family:var(--font-head);font-size:1.8rem;letter-spacing:.03em;color:var(--white);line-height:1}
-.wrt{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+/* ════════════════════════════════════════
+   WHO WE WORK WITH
+════════════════════════════════════════ */
+.who-rows{margin-top:4rem}
+.who-row{
+  display:grid;grid-template-columns:240px 1fr;gap:4rem;
+  padding:3.5rem 0;border-bottom:1px solid rgba(195,157,56,.1);
+  align-items:start;
+}
+.who-row:last-child{border-bottom:none}
+.who-h{font-family:var(--font-head);font-size:1.8rem;letter-spacing:.03em;color:var(--white);line-height:1}
+.who-tag-small{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
 
-/* CONTACT */
-.ctg{display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;margin-top:3.5rem}
-.ctf{display:flex;flex-direction:column;gap:1.2rem}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+/* ════════════════════════════════════════
+   CONTACT + AI FORM
+════════════════════════════════════════ */
+.ct-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;margin-top:3.5rem}
+.ct-form{display:flex;flex-direction:column;gap:1.2rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .fg{display:flex;flex-direction:column;gap:.5rem}
-.fl{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--white-dim)}
-.fi,.fta,.fsel{background:var(--black-mid);border:1px solid rgba(195,157,56,.12);color:var(--white);padding:.9rem 1rem;font-family:var(--font-body);font-size:.82rem;font-weight:400;outline:none;transition:border-color .3s;width:100%;-webkit-appearance:none;border-radius:0}
+.fl{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--white-dim);
+}
+.fi,.fta,.fsel{
+  background:var(--off-black);
+  border:1px solid rgba(195,157,56,.12);
+  color:var(--white);
+  padding:.9rem 1rem;
+  font-family:var(--font-body);font-size:.82rem;font-weight:400;
+  outline:none;transition:border-color .3s;width:100%;
+  -webkit-appearance:none;border-radius:0;
+}
 .fi:focus,.fta:focus,.fsel:focus{border-color:var(--gold)}
 .fi::placeholder,.fta::placeholder{color:rgba(138,136,128,.4)}
 .fta{min-height:110px;resize:vertical}
 .fsel option{background:var(--black)}
-.fsb{font-family:var(--font-body);font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:1.05rem 2.2rem;align-self:flex-start;transition:background .3s,transform .3s var(--ease);position:relative;overflow:hidden}
-.fsb::before{content:'';position:absolute;inset:0;background:var(--gold-mid);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
-.fsb:hover::before{transform:scaleX(1)}
-.fsb:hover{transform:translateY(-1px)}
-.fsbs{position:relative;z-index:1}
-.fsuc{display:none;margin-top:1.5rem;padding:1.5rem;background:var(--black-mid);border:1px solid rgba(195,157,56,.15);border-left:2px solid var(--gold)}
-.fsul{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
-.fsub{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)}
+.fsub{
+  font-family:var(--font-body);
+  font-size:.65rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--black);
+  background:var(--gold);border:none;
+  padding:1.05rem 2.2rem;align-self:flex-start;
+  transition:background .3s,transform .3s var(--ease);
+  position:relative;overflow:hidden;
+}
+.fsub::before{
+  content:'';position:absolute;inset:0;
+  background:var(--gold-mid);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.fsub:hover::before{transform:scaleX(1)}
+.fsub:hover{transform:translateY(-1px)}
+.fsub-span{position:relative;z-index:1}
+
+/* AI PANEL */
+.ai-box{
+  margin-top:1.5rem;padding:1.5rem;
+  background:var(--off-black);
+  border:1px solid rgba(195,157,56,.15);
+  border-left:2px solid var(--gold);
+  display:none;
+}
+.ai-box.on{display:block}
+.ai-label{
+  font-family:var(--font-mono);font-size:.55rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.8rem;
+}
+.ai-body{font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)}
+.dots{display:inline-flex;gap:4px;align-items:center}
+.dots span{
+  width:5px;height:5px;border-radius:50%;background:var(--gold);
+  animation:dot 1.2s ease-in-out infinite;
+}
+.dots span:nth-child(2){animation-delay:.15s}
+.dots span:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.25;transform:scale(.7)}40%{opacity:1;transform:scale(1)}}
+
+.ct-info{display:flex;flex-direction:column;gap:2.5rem}
 .ci-l{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
 .ci-v{font-size:.85rem;font-weight:400;color:var(--white-dim);line-height:1.7}
-.cti{display:flex;flex-direction:column;gap:2.5rem}
 
-/* PRIVACY */
-.priv-sec{max-width:860px;margin:0 auto;padding:5rem 5%}
-.priv-h{font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem}
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+footer{
+  background:var(--black);border-top:1px solid rgba(195,157,56,.1);
+  padding:2.5rem 5%;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;
+}
+.fl-logo{font-family:var(--font-head);font-size:1.1rem;letter-spacing:.06em;color:var(--white-dim)}
+.fl-logo span{color:var(--gold)}
+.fl-links{display:flex;gap:2rem;list-style:none}
+.fl-links a{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white-dim);transition:color .3s}
+.fl-links a:hover{color:var(--gold)}
+.fl-copy{font-family:var(--font-mono);font-size:.58rem;color:rgba(138,136,128,.5)}
 
-/* FOOTER */
-footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:2.5rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
-.flo{display:flex;align-items:center;gap:.8rem;font-family:var(--font-head);font-size:1.1rem;letter-spacing:.06em;color:var(--white-dim)}
-.flo img{height:32px;width:32px;border-radius:50%;object-fit:cover}
-.flo span{color:var(--gold)}
-.fli{display:flex;gap:2rem;list-style:none;flex-wrap:wrap}
-.fli a{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white-dim);transition:color .3s}
-.fli a:hover{color:var(--gold)}
-.fco{font-family:var(--font-mono);font-size:.58rem;color:rgba(138,136,128,.5)}
-
-/* RESPONSIVE */
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media(max-width:1024px){
+  .colour-strip{grid-template-columns:1fr 1fr}
+  .svc-row{grid-template-columns:80px 1fr;gap:1.5rem}
+  .svc-desc{grid-column:2/3}
+}
 @media(max-width:900px){
   nav{padding:1.1rem 5%}
-  .nv{display:none}
-  .nb{display:flex}
+  .nav-links{display:none}
+  .nav-burger{display:flex}
   .hero{padding:7rem 5% 3rem}
-  .hbot{grid-template-columns:1fr;gap:2rem}
-  .hbtns{align-items:flex-start}
+  .hero-bottom{grid-template-columns:1fr;gap:2rem}
+  .hero-btns{align-items:flex-start}
   .split{grid-template-columns:1fr;gap:3rem}
   .vis{display:none}
-  .cg{grid-template-columns:1fr 1fr}
-  .sdg{grid-template-columns:1fr;gap:3rem}
-  .wr{grid-template-columns:1fr;gap:2rem}
-  .ctg{grid-template-columns:1fr;gap:3rem}
-  .fr{grid-template-columns:1fr}
-  .vc{grid-template-columns:1fr}
+  .client-grid{grid-template-columns:1fr 1fr}
+  .sd-grid{grid-template-columns:1fr;gap:3rem}
+  .who-row{grid-template-columns:1fr;gap:2rem}
+  .ct-grid{grid-template-columns:1fr;gap:3rem}
+  .frow{grid-template-columns:1fr}
+  .colour-strip{grid-template-columns:1fr 1fr}
+  .val-grid{grid-template-columns:1fr}
   .sec{padding:5rem 5%}
   footer{flex-direction:column;text-align:center}
-  .fli{justify-content:center}
+  .fl-links{justify-content:center}
   .svc-row{grid-template-columns:60px 1fr;padding:2rem 0}
   .ph-h1{font-size:clamp(2.5rem,10vw,5rem)}
-  .priv-sec{padding:3rem 5%}
 }
 @media(max-width:600px){
-  .cg{grid-template-columns:1fr}
-  .hbot{gap:1.5rem}
+  .client-grid{grid-template-columns:1fr}
+  .colour-strip{grid-template-columns:1fr}
+  .hero-h1{font-size:clamp(3.5rem,14vw,6rem)}
 }
 </style>
 </head>
 <body>
-<canvas id="bgc"></canvas>
+<canvas id="bg-canvas"></canvas>
 <div id="grain"></div>
-<div id="cd"></div>
-<div id="cr"><span id="cl"></span></div>
+<div id="c-dot"></div>
+<div id="c-ring"><span id="c-label"></span></div>
 <div id="pt"></div>
 
+<!-- MOBILE MENU -->
 <div id="mob">
-  <button id="mbc" onclick="closeMob()">✕</button>
+  <button id="mob-close" onclick="closeMob()">✕</button>
   <a href="#" onclick="go('home');closeMob()">Home</a>
   <a href="#" onclick="go('about');closeMob()">About</a>
   <a href="#" onclick="go('services');closeMob()">Services</a>
@@ -300,66 +783,98 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
   <a href="#" onclick="go('privacy');closeMob()">Privacy Policy</a>
 </div>
 
+<!-- NAV -->
 <nav id="nav">
-  <a class="nl" href="#" onclick="go('home')"><img src="logo.png" alt="The Filler Piece"/></a>
-  <ul class="nv">
+  <a class="nav-logo" href="#" onclick="go('home')">TFP<span class="dot">.</span></a>
+  <ul class="nav-links">
     <li><a href="#" onclick="go('home')">Home</a></li>
     <li><a href="#" onclick="go('about')">About</a></li>
     <li><a href="#" onclick="go('services')">Services</a></li>
     <li><a href="#" onclick="go('how')">Process</a></li>
     <li><a href="#" onclick="go('who')">Clients</a></li>
-    <li><a href="#" class="nc" onclick="go('contact')">Enquire</a></li>
+    <li><a href="#" class="nav-cta" onclick="go('contact')">Enquire</a></li>
   </ul>
-  <button class="nb" id="burger" onclick="openMob()"><span></span><span></span><span></span></button>
+  <button class="nav-burger" id="burger" onclick="openMob()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- HOME -->
+<!-- ══════════════════════ HOME ══════════════════════ -->
 <div class="page active" id="page-home">
   <section class="hero">
     <div class="hero-top">
-      <div class="htag">Managed Joinery Delivery · Australia</div>
-      <h1 class="hh1">
-        <span class="hline">ONE</span>
-        <span class="hline gold">ACCOUNTABLE</span>
-        <span class="hline">PARTNER.</span>
+      <div class="hero-tag">Managed Joinery Delivery · Australia</div>
+      <h1 class="hero-h1">
+        <span class="line">ONE</span>
+        <span class="line gold">ACCOUNTABLE</span>
+        <span class="line">INTERFACE.</span>
       </h1>
     </div>
-    <div class="hbot">
-      <div><p class="hdesc">The Filler Piece protects the brands of joinery manufacturers and builders — managing installation, QA, remediation, and specialist artisan works. Site to sign-off.</p></div>
-      <div class="hstats">
-        <div><span class="stn">4</span><div class="stl">Core Services</div></div>
-        <div><span class="stn">1</span><div class="stl">Point of Accountability</div></div>
-        <div><span class="stn">0</span><div class="stl">Ambiguity</div></div>
+    <div class="hero-bottom">
+      <div>
+        <p class="hero-desc">The Filler Piece protects the brands of joinery manufacturers and builders — managing installation, QA, remediation, and specialist artisan works through a vetted independent contractor network. Site to sign-off.</p>
       </div>
-      <div class="hbtns">
+      <div class="hero-stats">
+        <div class="stat-row"><span class="stat-n">4</span><span class="stat-l">Core Disciplines</span></div>
+        <div class="stat-row"><span class="stat-n">1</span><span class="stat-l">Point of Accountability</span></div>
+        <div class="stat-row"><span class="stat-n">0</span><span class="stat-l">Ambiguity</span></div>
+      </div>
+      <div class="hero-btns">
         <a href="#" class="btn-a" onclick="go('contact')"><span>Discuss Your Project</span></a>
         <a href="#" class="btn-b" onclick="go('services')">Explore Services →</a>
       </div>
     </div>
-    <div class="hscroll"><div class="hscrollt">Scroll</div><div class="hscrollb"></div></div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-txt">Scroll</div>
+      <div class="hero-scroll-bar"></div>
+    </div>
   </section>
 
+  <!-- MARQUEE -->
   <div class="strip">
-    <div class="str-t">
-      <span class="str-i">Joinery Installation</span><span class="str-i">QA Auditing</span><span class="str-i">Joinery Remediation</span><span class="str-i">Artisan Services</span><span class="str-i">Brand Protection</span><span class="str-i">Single Accountability</span><span class="str-i">Managed Delivery</span>
-      <span class="str-i">Joinery Installation</span><span class="str-i">QA Auditing</span><span class="str-i">Joinery Remediation</span><span class="str-i">Artisan Services</span><span class="str-i">Brand Protection</span><span class="str-i">Single Accountability</span><span class="str-i">Managed Delivery</span>
+    <div class="strip-track">
+      <span class="strip-item">Joinery Installation</span>
+      <span class="strip-item">QA Auditing</span>
+      <span class="strip-item">Joinery Remediation</span>
+      <span class="strip-item">Artisan Services</span>
+      <span class="strip-item">Brand Protection</span>
+      <span class="strip-item">Single Accountability</span>
+      <span class="strip-item">Managed Delivery</span>
+      <span class="strip-item">Joinery Installation</span>
+      <span class="strip-item">QA Auditing</span>
+      <span class="strip-item">Joinery Remediation</span>
+      <span class="strip-item">Artisan Services</span>
+      <span class="strip-item">Brand Protection</span>
+      <span class="strip-item">Single Accountability</span>
+      <span class="strip-item">Managed Delivery</span>
     </div>
   </div>
 
+
+  <!-- WHY TFP -->
   <section class="sec sec-dark">
     <div class="split">
       <div>
         <div class="tag rv">Why TFP</div>
         <h2 class="h2 rv">A different<br>delivery <em>partner</em></h2>
-        <p class="bt rv">The Filler Piece was built to address a clear gap in the joinery industry — the absence of a delivery partner that takes genuine ownership of outcomes from project commencement through to final sign-off. We exist to protect the brands and commercial interests of joinery manufacturers, builders, and developers.</p>
-        <div class="wpts">
-          <div class="wpt rv"><div class="wic">✦</div><div><div class="wph">Single Point of Accountability</div><div class="wpb">One partner from project commencement through to final sign-off. No fragmented responsibility. No ambiguity in who owns the outcome.</div></div></div>
-          <div class="wpt rv d1"><div class="wic">✦</div><div><div class="wph">Brand Protection</div><div class="wpb">Quality systems built around your commercial exposure. We treat protection of your reputation as a core project deliverable, not an afterthought.</div></div></div>
-          <div class="wpt rv d2"><div class="wic">✦</div><div><div class="wph">Compliance-Conscious</div><div class="wpb">WHS governance, documentation, and governance handled with commercial rigour at every engagement — embedded by design, not bolted on.</div></div></div>
+        <p class="body-txt rv">The Filler Piece was built to address a persistent gap in the joinery industry — the absence of a single, commercially accountable partner who manages the full scope without the risk profile of traditional labour hire or unmanaged subcontracting.</p>
+        <div class="why-pts">
+          <div class="why-pt rv">
+            <div class="why-ic">✦</div>
+            <div><div class="why-pt-h">Single Point of Accountability</div><div class="why-pt-b">One managed interface from project commencement through to final sign-off. No fragmented responsibility. No ambiguity in who owns the outcome.</div></div>
+          </div>
+          <div class="why-pt rv d1">
+            <div class="why-ic">✦</div>
+            <div><div class="why-pt-h">Brand Protection</div><div class="why-pt-b">Quality systems built around your commercial exposure. We treat protection of your reputation as a core project deliverable, not an afterthought.</div></div>
+          </div>
+          <div class="why-pt rv d2">
+            <div class="why-ic">✦</div>
+            <div><div class="why-pt-h">Compliance-Conscious</div><div class="why-pt-b">WHS governance, documentation, and contractor management handled with commercial rigour at every engagement — embedded by design, not bolted on.</div></div>
+          </div>
         </div>
       </div>
       <div class="vis rv">
-        <div class="vis-i">
+        <div class="vis-inner">
           <div class="vis-dots"><div class="vis-dot"></div><div class="vis-dot"></div><div class="vis-dot"></div></div>
           <div class="vis-big">MANAGED.<br>ASSURED.<br><em style="font-style:italic;color:var(--gold)">DELIVERED.</em></div>
           <div class="vis-sub">The TFP Commitment</div>
@@ -368,81 +883,92 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
     </div>
   </section>
 
+  <!-- CLIENTS -->
   <section class="sec">
     <div class="tag rv">Who We Serve</div>
-    <h2 class="h2 rv">Built for those who demand <em>accountability</em></h2>
-    <div class="cg">
-      <div class="cc rv"><div class="cc-n">01</div><div class="cc-h">JOINERY MANUFACTURERS</div><div class="cc-b">Protect your brand post-production. We manage the installation interface so your product is presented to the standard it was built to.</div></div>
-      <div class="cc rv d1"><div class="cc-n">02</div><div class="cc-h">BUILDERS & DEVELOPERS</div><div class="cc-b">Reduce defect liability exposure. Managed installation with evidence-based sign-off at practical completion.</div></div>
-      <div class="cc rv d2"><div class="cc-n">03</div><div class="cc-h">ARCHITECTS & PMS</div><div class="cc-b">One contact point. Compliant documentation. Assurance that installation aligns with design intent and specification.</div></div>
-      <div class="cc rv d3"><div class="cc-n">04</div><div class="cc-h">RESIDENTIAL CLIENTS</div><div class="cc-b">Premium residential projects requiring specialist joinery delivery reflecting the investment in the build.</div></div>
+    <h2 class="h2 rv">Built for those who<br>demand <em>accountability</em></h2>
+    <div class="client-grid">
+      <div class="cc rv"><div class="cc-num">01</div><div class="cc-h">JOINERY MANUFACTURERS</div><div class="cc-b">Protect your brand post-production. We manage the installation interface so your product is presented to the standard it was built to.</div></div>
+      <div class="cc rv d1"><div class="cc-num">02</div><div class="cc-h">BUILDERS & DEVELOPERS</div><div class="cc-b">Reduce defect liability exposure. Managed installation with evidence-based sign-off at practical completion.</div></div>
+      <div class="cc rv d2"><div class="cc-num">03</div><div class="cc-h">ARCHITECTS & PMS</div><div class="cc-b">One contact point. Compliant documentation. Assurance that installation aligns with design intent and specification.</div></div>
+      <div class="cc rv d3"><div class="cc-num">04</div><div class="cc-h">RESIDENTIAL CLIENTS</div><div class="cc-b">Premium residential projects requiring specialist joinery delivery reflecting the investment in the build.</div></div>
     </div>
   </section>
 
-  <div class="cta rv"><h2 class="cta-h">READY TO DE-RISK<br>YOUR PROJECT?</h2><p class="cta-s">Speak with The Filler Piece about managed delivery, QA, and assurance for your programme.</p><a href="#" class="btn-d" onclick="go('contact')">Submit an Enquiry</a></div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <div class="cta rv">
+    <h2 class="cta-h">READY TO DE-RISK<br>YOUR PROJECT?</h2>
+    <p class="cta-sub">Speak with The Filler Piece about managed delivery, QA, and assurance for your programme.</p>
+    <a href="#" class="btn-dark" onclick="go('contact')">Submit an Enquiry</a>
+  </div>
+
+  <footer>
+    <div class="fl-logo">The <span>Filler</span> Piece</div>
+    <ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul>
+    <div class="fl-copy">© 2025 The Filler Piece · Australia</div>
+  </footer>
 </div>
 
-<!-- ABOUT -->
+<!-- ══════════════════════ ABOUT ══════════════════════ -->
 <div class="page" id="page-about">
-  <div class="ph"><div class="phg"></div><div><div class="tag">About TFP</div><h1 class="ph-h1">BUILT AROUND<br><em>OUTCOMES</em>,<br>NOT JUST ACTIVITY.</h1></div></div>
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">About TFP</div><h1 class="ph-h1">BUILT AROUND<br><em>ACCOUNTABILITY</em>,<br>NOT SCALE.</h1></div></div>
   <section class="sec">
     <div class="split">
       <div>
         <div class="tag rv">Our Role</div>
-        <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,4rem)">A delivery partner that stands behind its <em>work</em></h2>
-        <p class="bt rv">The Filler Piece was established to address a clear gap in the joinery industry — the absence of a delivery partner that takes genuine ownership of outcomes from project commencement through to final sign-off.</p>
-        <p class="bt rv" style="margin-top:.8rem">We exist to protect the brands and commercial interests of joinery manufacturers, builders, and developers. Our focus is on delivering measurable outcomes — conforming installations, independent quality assurance, targeted remediation, and specialist artisan works — under a single accountable structure.</p>
+        <h2 class="h2 rv">A managed delivery partner for a <em>demanding</em> industry</h2>
+        <p class="body-txt rv">The Filler Piece was established to fill a specific and persistent gap in the commercial and residential joinery sector: the lack of a single, commercially mature partner capable of managing installation, quality assurance, and remediation under one accountable structure.</p>
+        <p class="body-txt rv" style="margin-top:.8rem">We are not a labour hire agency. We do not operate as a subcontracting marketplace. We are a project-managed delivery partner — one that takes responsibility for outcomes, not just activity.</p>
         <div style="height:1px;background:linear-gradient(to right,rgba(195,157,56,.3),transparent);margin:2rem 0" class="rv"></div>
-        <p class="bt rv">What sets TFP apart is not just what we do, but how we do it. Every engagement is governed by documented quality and safety frameworks, with clear scope, defined deliverables, and evidence-based sign-off at every stage.</p>
+        <p class="body-txt rv">Our model is built on managed engagement of vetted independent contractors, governed by documented quality and safety frameworks. We provide manufacturers, builders, and developers with the confidence that comes from having one entity responsible for what happens on site.</p>
       </div>
       <div>
-        <div class="ib rv"><div class="ibl">Our Delivery Philosophy</div><div class="ibb">TFP is built around a simple principle: outcomes matter more than activity. We are commercially accountable for the results we are engaged to deliver — from the first site visit through to documented sign-off.<br><br>Every project engagement is supported by structured quality frameworks, clear scope, and disciplined documentation — giving manufacturers, builders, and developers the confidence that comes from working with a partner who stands behind their work.</div></div>
+        <div class="info-box rv"><div class="info-label">Our Delivery Philosophy</div><div class="info-body">Accountability cannot be divided. The moment responsibility is distributed across multiple parties without clear governance, brand exposure and project risk increase proportionally.<br><br>TFP exists to close that gap — through structured project coordination, independent quality oversight, and a disciplined approach to documentation and sign-off that protects every party in the project chain.</div></div>
+        <div class="info-box rv" style="border-left-color:var(--white-dim)"><div class="info-label" style="color:var(--white-dim)">Not Labour Hire. Not a Marketplace.</div><div class="info-body">TFP engages independent contractors to deliver scoped project outcomes. We do not direct labour on behalf of clients. We manage delivery under our own managed service obligations — maintaining full commercial and operational accountability for results.</div></div>
       </div>
     </div>
   </section>
   <section class="sec sec-dark">
     <div class="tag rv">Core Principles</div>
-    <h2 class="h2 rv">What we stand <em>for</em></h2>
-    <div class="vc">
-      <div class="vci rv"><div class="vch">ACCOUNTABILITY</div><div class="vcb">Full responsibility for the outcomes we are engaged to deliver. One partner, one scope, one standard of sign-off.</div></div>
-      <div class="vci rv d1"><div class="vch">SYSTEMS OVER EGO</div><div class="vcb">Quality outcomes result from documented systems, not individual effort. Assurance is built into how we work, not just what we produce.</div></div>
-      <div class="vci rv d2"><div class="vch">COMPLIANCE AS STANDARD</div><div class="vcb">WHS obligations, contractor governance, and documentation are integrated into every project from engagement through close-out.</div></div>
-      <div class="vci rv d3"><div class="vch">BRAND PROTECTION</div><div class="vcb">Joinery is the final expression of a manufacturer's or builder's quality. We treat protection of your brand as a core deliverable.</div></div>
-      <div class="vci rv d4"><div class="vch">COMMERCIAL RIGOUR</div><div class="vcb">Clarity of scope, defined deliverables, and documented outcomes in every engagement. No ambiguity. No scope creep.</div></div>
-      <div class="vci rv d5"><div class="vch">INDEPENDENT PERSPECTIVE</div><div class="vcb">Our QA function operates with genuine independence. We report what we find — because honest assessment protects everyone in the chain.</div></div>
+    <h2 class="h2 rv">What we<br>stand <em>for</em></h2>
+    <div class="val-grid">
+      <div class="val-c rv"><div class="val-h">ACCOUNTABILITY</div><div class="val-b">Full responsibility for the outcomes we are engaged to deliver. One entity, one scope, one standard of sign-off.</div></div>
+      <div class="val-c rv d1"><div class="val-h">SYSTEMS OVER EGO</div><div class="val-b">Quality outcomes result from documented systems, not individual effort. Assurance is built into how we work, not just what we produce.</div></div>
+      <div class="val-c rv d2"><div class="val-h">COMPLIANCE AS STANDARD</div><div class="val-b">WHS obligations, contractor governance, and documentation are integrated into every project from engagement through close-out.</div></div>
+      <div class="val-c rv d3"><div class="val-h">BRAND PROTECTION</div><div class="val-b">Joinery is the final expression of a manufacturer's or builder's quality. We treat protection of your brand as a core deliverable.</div></div>
+      <div class="val-c rv d4"><div class="val-h">COMMERCIAL RIGOUR</div><div class="val-b">Clarity of scope, defined deliverables, and documented outcomes in every engagement. No ambiguity. No scope creep.</div></div>
+      <div class="val-c rv d5"><div class="val-h">INDEPENDENT PERSPECTIVE</div><div class="val-b">Our QA function operates with genuine independence. We report what we find — because honest assessment protects everyone in the chain.</div></div>
     </div>
   </section>
-  <div class="cta"><h2 class="cta-h">WORK WITH A PARTNER<br>WHO TAKES OWNERSHIP.</h2><p class="cta-s">Contact TFP to discuss your project requirements.</p><a href="#" class="btn-d" onclick="go('contact')">Get in Touch</a></div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <div class="cta"><h2 class="cta-h">WORK WITH A PARTNER<br>WHO TAKES OWNERSHIP.</h2><p class="cta-sub">Contact TFP to discuss your project requirements.</p><a href="#" class="btn-dark" onclick="go('contact')">Get in Touch</a></div>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fl-copy">© 2025 The Filler Piece · Australia</div></footer>
 </div>
 
-<!-- SERVICES -->
+<!-- ══════════════════════ SERVICES ══════════════════════ -->
 <div class="page" id="page-services">
-  <div class="ph"><div class="phg"></div><div><div class="tag">Services</div><h1 class="ph-h1">INTEGRATED<br>DELIVERY ACROSS<br>THE <em>LIFECYCLE</em></h1></div></div>
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Services</div><h1 class="ph-h1">INTEGRATED<br>DELIVERY ACROSS<br>THE <em>LIFECYCLE</em></h1></div></div>
   <section class="sec">
-    <p class="bt rv" style="max-width:680px">TFP provides four core service disciplines, each designed to operate independently or as part of an integrated project delivery framework. One accountable partner throughout.</p>
-    <div style="margin-top:3rem">
-      <div class="svc-row rv" data-cursor="View"><div class="svc-num">01</div><div><div class="svc-name">JOINERY INSTALLATION</div><a href="#" class="svc-arr" onclick="go('install')">Full Details →</a></div><div class="svc-desc">Project-managed coordination of joinery installation. Site interface, program management, and conformance oversight under one accountable structure.</div></div>
-      <div class="svc-row rv d1" data-cursor="View"><div class="svc-num">02</div><div><div class="svc-name">QA AUDITING</div><a href="#" class="svc-arr" onclick="go('qa')">Full Details →</a></div><div class="svc-desc">Independent quality audits conducted during or post-installation. Evidence-based defect reporting and formal sign-off against drawings and tolerances.</div></div>
-      <div class="svc-row rv d2" data-cursor="View"><div class="svc-num">03</div><div><div class="svc-name">JOINERY REMEDIATION</div><a href="#" class="svc-arr" onclick="go('remediation')">Full Details →</a></div><div class="svc-desc">Targeted rectification of non-conforming works. Timeline protection and cost minimisation through managed remediation without unnecessary removal.</div></div>
-      <div class="svc-row rv d3" data-cursor="View"><div class="svc-num">04</div><div><div class="svc-name">ARTISAN SERVICES</div><a href="#" class="svc-arr" onclick="go('artisan')">Full Details →</a></div><div class="svc-desc">High-skill specialist finishing for premium and complex projects through qualified specialists matched to the demands of the work.</div></div>
+    <p class="body-txt rv" style="max-width:680px">TFP provides four core service disciplines, each designed to operate independently or as part of an integrated project delivery framework. One accountable interface throughout.</p>
+    <div class="svc-list-wrap">
+      <div class="svc-row rv" data-cursor="View"><div class="svc-num">01</div><div><div class="svc-name">JOINERY INSTALLATION</div><a href="#" class="svc-arrow" onclick="go('install')">Full Details →</a></div><div class="svc-desc">Project-managed coordination of joinery installation. Site interface, program management, and conformance oversight under one accountable structure.</div></div>
+      <div class="svc-row rv d1" data-cursor="View"><div class="svc-num">02</div><div><div class="svc-name">QA AUDITING</div><a href="#" class="svc-arrow" onclick="go('qa')">Full Details →</a></div><div class="svc-desc">Independent quality audits conducted during or post-installation. Evidence-based defect reporting and formal sign-off against drawings and tolerances.</div></div>
+      <div class="svc-row rv d2" data-cursor="View"><div class="svc-num">03</div><div><div class="svc-name">JOINERY REMEDIATION</div><a href="#" class="svc-arrow" onclick="go('remediation')">Full Details →</a></div><div class="svc-desc">Targeted rectification of non-conforming works. Timeline protection and cost minimisation through managed remediation without unnecessary removal.</div></div>
+      <div class="svc-row rv d3" data-cursor="View"><div class="svc-num">04</div><div><div class="svc-name">ARTISAN SERVICES</div><a href="#" class="svc-arrow" onclick="go('artisan')">Full Details →</a></div><div class="svc-desc">High-skill specialist finishing for premium and complex projects through qualified independent specialists matched to the demands of the work.</div></div>
     </div>
   </section>
-  <div class="cta"><h2 class="cta-h">NOT SURE WHICH<br>SERVICE FITS?</h2><p class="cta-s">Speak with TFP to scope the right engagement for your programme.</p><a href="#" class="btn-d" onclick="go('contact')">Enquire Now</a></div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <div class="cta"><h2 class="cta-h">NOT SURE WHICH<br>SERVICE FITS?</h2><p class="cta-sub">Speak with TFP to scope the right engagement for your programme.</p><a href="#" class="btn-dark" onclick="go('contact')">Enquire Now</a></div>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fl-copy">© 2025 The Filler Piece · Australia</div></footer>
 </div>
 
-<!-- INSTALLATION -->
+<!-- ══════════════════════ SERVICE: INSTALL ══════════════════════ -->
 <div class="page" id="page-install">
-  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 90% 20%,rgba(195,157,56,.07) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 01</div><h1 class="ph-h1">JOINERY<br><em>INSTALLATION</em></h1><p style="margin-top:1rem;font-size:.85rem;color:var(--white-dim);max-width:480px">End-to-end managed installation coordination. One point of accountability from delivery to sign-off.</p></div></div>
-  <section class="sec"><div class="sdg">
+  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 90% 20%,rgba(195,157,56,.07) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 01</div><h1 class="ph-h1">JOINERY<br><em>INSTALLATION</em></h1><p style="margin-top:1rem;font-size:.85rem;font-weight:400;color:var(--white-dim);max-width:480px">End-to-end managed installation coordination. One point of accountability from delivery to sign-off.</p></div></div>
+  <section class="sec"><div class="sd-grid">
     <div>
       <div class="tag rv">What We Do</div>
       <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3.5rem)">Managed installation,<br><em>without the risk</em></h2>
-      <p class="bt rv">TFP manages the complete joinery installation process on behalf of manufacturers and builders — coordinating site interfaces and ensuring work is executed in conformance with drawings, specifications, and the project programme.</p>
+      <p class="body-txt rv">TFP coordinates and manages the complete joinery installation process on behalf of manufacturers and builders — engaging vetted independent contractors, managing site interfaces, and ensuring work is executed in conformance with drawings, specifications, and the project programme.</p>
       <div class="tag rv" style="margin-top:2.5rem">Scope Includes</div>
-      <ul class="sdl">
+      <ul class="sd-list">
         <li class="rv">End-to-end coordination of joinery installation across all project types</li>
         <li class="rv">Site interface management with builders, head contractors, and project stakeholders</li>
         <li class="rv">Program adherence monitoring and proactive schedule management</li>
@@ -454,26 +980,26 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
     </div>
     <div>
       <div class="tag rv">When It's Used</div>
-      <p class="bt rv">Engaged when manufacturers or builders require a managed delivery partner to coordinate and oversee joinery installation — particularly where brand exposure or quality requirements make an unmanaged approach commercially unacceptable.</p>
+      <p class="body-txt rv">Engaged when manufacturers or builders require a managed delivery partner to coordinate and oversee joinery installation — particularly on projects where brand exposure or quality requirements make an unmanaged approach commercially unacceptable.</p>
       <div class="tag rv" style="margin-top:2rem">Who It's For</div>
-      <p class="bt rv">Joinery manufacturers protecting their product post-production. Builders and developers requiring a compliant, accountable installation partner. Projects where standard installer engagement does not provide sufficient governance.</p>
-      <div class="ib rv"><div class="ibl">Client Outcome</div><div class="ibb">A fully managed installation programme, delivered on programme, in conformance with specification, and supported by documentation that provides genuine evidence of quality. One partner accountable. Zero ambiguity.</div></div>
+      <p class="body-txt rv">Joinery manufacturers protecting their product post-production. Builders and developers requiring a compliant, accountable installation interface. Projects where standard installer engagement does not provide sufficient governance.</p>
+      <div class="info-box rv"><div class="info-label">Client Outcome</div><div class="info-body">A fully managed installation programme, delivered on programme, in conformance with specification, and supported by documentation that provides genuine evidence of quality. One entity accountable. Zero ambiguity.</div></div>
       <div style="margin-top:1.5rem" class="rv"><a href="#" class="btn-a" onclick="go('contact')"><span>Enquire About This Service</span></a></div>
     </div>
   </div></section>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('qa')">QA Auditing →</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fco">© 2025 The Filler Piece</div></footer>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('qa')">QA Auditing →</a></li></ul><div class="fl-copy">© 2025 The Filler Piece</div></footer>
 </div>
 
-<!-- QA -->
+<!-- ══════════════════════ SERVICE: QA ══════════════════════ -->
 <div class="page" id="page-qa">
-  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 5% 50%,rgba(142,198,63,.05) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 02</div><h1 class="ph-h1">QA<br><em>AUDITING</em></h1><p style="margin-top:1rem;font-size:.85rem;color:var(--white-dim);max-width:480px">Independent quality audits — evidence-based, commercially structured, built around your sign-off requirements.</p></div></div>
-  <section class="sec"><div class="sdg">
+  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 5% 50%,rgba(142,198,63,.05) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 02</div><h1 class="ph-h1">QA<br><em>AUDITING</em></h1><p style="margin-top:1rem;font-size:.85rem;font-weight:400;color:var(--white-dim);max-width:480px">Independent quality audits — evidence-based, commercially structured, built around your sign-off requirements.</p></div></div>
+  <section class="sec"><div class="sd-grid">
     <div>
       <div class="tag rv">What We Do</div>
       <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3.5rem)">Independent QA,<br><em>without compromise</em></h2>
-      <p class="bt rv">TFP conducts independent quality audits of joinery installation during the programme or following completion — structured around your drawings, scope of works, tolerances, and project requirements, delivering evidence-based reporting that provides genuine compliance assurance.</p>
+      <p class="body-txt rv">TFP conducts independent quality audits of joinery installation during the programme or following completion. Our audits are structured around your drawings, scope of works, tolerances, and project requirements — delivered with evidence-based reporting that provides genuine compliance assurance.</p>
       <div class="tag rv" style="margin-top:2.5rem">Scope Includes</div>
-      <ul class="sdl">
+      <ul class="sd-list">
         <li class="rv">Independent quality audits during installation or at project completion</li>
         <li class="rv">Defect identification documented to drawing and specification reference</li>
         <li class="rv">Compliance reporting structured for project and contractual requirements</li>
@@ -484,56 +1010,56 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
     </div>
     <div>
       <div class="tag rv">When It's Used</div>
-      <p class="bt rv">Engaged when an independent quality assessment is required — at mid-project hold points, prior to practical completion, following installation by others, or as a standalone verification service on complex or high-value projects.</p>
+      <p class="body-txt rv">QA auditing is engaged when an independent quality assessment is required — at mid-project hold points, prior to practical completion, following installation by others, or as a standalone verification service on complex or high-value projects.</p>
       <div class="tag rv" style="margin-top:2rem">Who It's For</div>
-      <p class="bt rv">Builders seeking independent sign-off prior to handover. Manufacturers requiring confirmation their product has been installed to specification. Architects and PMs requiring documented evidence that installation meets design intent.</p>
-      <div class="ib rv" style="border-left-color:var(--lime)"><div class="ibl" style="color:var(--lime)">Client Outcome</div><div class="ibb">A complete, evidence-based quality audit report. Defects identified, documented, and referenced against specification. Confidence in the state of the works before sign-off is given — not after.</div></div>
+      <p class="body-txt rv">Builders seeking independent sign-off prior to handover. Manufacturers requiring confirmation their product has been installed to specification. Architects and PMs requiring documented evidence that installation meets design intent.</p>
+      <div class="info-box rv" style="border-left-color:var(--lime)"><div class="info-label" style="color:var(--lime)">Client Outcome</div><div class="info-body">A complete, evidence-based quality audit report. Defects identified, documented, and referenced against specification. Confidence in the state of the works before sign-off is given — not after.</div></div>
       <div style="margin-top:1.5rem" class="rv"><a href="#" class="btn-a" onclick="go('contact')"><span>Enquire About This Service</span></a></div>
     </div>
   </div></section>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('remediation')">Remediation →</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fco">© 2025 The Filler Piece</div></footer>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('remediation')">Remediation →</a></li></ul><div class="fl-copy">© 2025 The Filler Piece</div></footer>
 </div>
 
-<!-- REMEDIATION -->
+<!-- ══════════════════════ SERVICE: REMEDIATION ══════════════════════ -->
 <div class="page" id="page-remediation">
-  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 70% 80%,rgba(102,46,145,.06) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 03</div><h1 class="ph-h1">JOINERY<br><em>REMEDIATION</em></h1><p style="margin-top:1rem;font-size:.85rem;color:var(--white-dim);max-width:480px">Targeted rectification — protecting timelines and reducing rework cost without unnecessary disruption.</p></div></div>
-  <section class="sec"><div class="sdg">
+  <div class="ph" style="background:radial-gradient(ellipse 50% 70% at 70% 80%,rgba(102,46,145,.06) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 03</div><h1 class="ph-h1">JOINERY<br><em>REMEDIATION</em></h1><p style="margin-top:1rem;font-size:.85rem;font-weight:400;color:var(--white-dim);max-width:480px">Targeted rectification — protecting timelines and reducing rework cost without unnecessary disruption.</p></div></div>
+  <section class="sec"><div class="sd-grid">
     <div>
       <div class="tag rv">What We Do</div>
       <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3.5rem)">Rectification without<br><em>unnecessary disruption</em></h2>
-      <p class="bt rv">TFP manages remediation of non-conforming joinery works, from minor defect correction through to complex rectification programmes. Our approach prioritises targeted intervention — resolving non-conformances without full removal wherever structurally and commercially achievable.</p>
+      <p class="body-txt rv">TFP manages remediation of non-conforming joinery works, from minor defect correction through to complex rectification programmes. Our approach prioritises targeted intervention — resolving non-conformances without full removal wherever structurally and commercially achievable.</p>
       <div class="tag rv" style="margin-top:2.5rem">Scope Includes</div>
-      <ul class="sdl">
+      <ul class="sd-list">
         <li class="rv">Assessment and scoping of non-conforming joinery works</li>
         <li class="rv">Targeted rectification without full removal where achievable</li>
         <li class="rv">Complex remediation programme management for multi-defect projects</li>
-        <li class="rv">Coordination of specialist remediation resources where required</li>
+        <li class="rv">Coordination of specialist remediation trades where required</li>
         <li class="rv">Post-remediation quality verification and sign-off</li>
         <li class="rv">Documentation of rectification scope and outcome for contractual purposes</li>
       </ul>
     </div>
     <div>
       <div class="tag rv">When It's Used</div>
-      <p class="bt rv">Engaged when joinery works have been identified as non-conforming — through independent audit, builder inspection, or client feedback — and a structured rectification programme is required to restore compliance.</p>
+      <p class="body-txt rv">Engaged when joinery works have been identified as non-conforming — through independent audit, builder inspection, or client feedback — and a structured rectification programme is required to restore compliance.</p>
       <div class="tag rv" style="margin-top:2rem">Who It's For</div>
-      <p class="bt rv">Builders facing defect liability exposure. Manufacturers responding to non-conformance claims. Developers managing rework cost on complex residential or commercial projects.</p>
-      <div class="ib rv" style="border-left-color:var(--purple)"><div class="ibl" style="color:var(--purple)">Client Outcome</div><div class="ibb">Non-conforming works rectified to specification. Timelines protected. Cost minimised through targeted, managed remediation. Full documentary evidence provided at close-out.</div></div>
+      <p class="body-txt rv">Builders facing defect liability exposure. Manufacturers responding to non-conformance claims. Developers managing rework cost on complex residential or commercial projects.</p>
+      <div class="info-box rv" style="border-left-color:var(--purple)"><div class="info-label" style="color:var(--purple)">Client Outcome</div><div class="info-body">Non-conforming works rectified to specification. Timelines protected. Cost minimised through targeted, managed remediation. Full documentary evidence provided at close-out.</div></div>
       <div style="margin-top:1.5rem" class="rv"><a href="#" class="btn-a" onclick="go('contact')"><span>Enquire About This Service</span></a></div>
     </div>
   </div></section>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('artisan')">Artisan →</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fco">© 2025 The Filler Piece</div></footer>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('artisan')">Artisan →</a></li></ul><div class="fl-copy">© 2025 The Filler Piece</div></footer>
 </div>
 
-<!-- ARTISAN -->
+<!-- ══════════════════════ SERVICE: ARTISAN ══════════════════════ -->
 <div class="page" id="page-artisan">
-  <div class="ph" style="background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(195,157,56,.07) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 04</div><h1 class="ph-h1">ARTISAN<br><em>SERVICES</em></h1><p style="margin-top:1rem;font-size:.85rem;color:var(--white-dim);max-width:480px">Specialist finishing and high-skill joinery works for premium and complex projects.</p></div></div>
-  <section class="sec"><div class="sdg">
+  <div class="ph" style="background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(195,157,56,.07) 0%,transparent 70%),var(--black)"><div><div class="tag">Service 04</div><h1 class="ph-h1">ARTISAN<br><em>SERVICES</em></h1><p style="margin-top:1rem;font-size:.85rem;font-weight:400;color:var(--white-dim);max-width:480px">Specialist finishing and high-skill joinery works for premium and complex projects.</p></div></div>
+  <section class="sec"><div class="sd-grid">
     <div>
       <div class="tag rv">What We Do</div>
       <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3.5rem)">Specialist skill for<br><em>demanding</em> projects</h2>
-      <p class="bt rv">TFP's artisan services provide access to high-skill, specialist joinery-related works for projects where standard installation capability is insufficient. These works demand precision, craft, and specialist knowledge that is rare in general trade engagement.</p>
+      <p class="body-txt rv">TFP's artisan services provide access to high-skill, specialist joinery-related works for projects where standard installation capability is insufficient. These are works that demand precision, craft, and specialist knowledge that is rare in general trade engagement.</p>
       <div class="tag rv" style="margin-top:2.5rem">Scope Includes</div>
-      <ul class="sdl">
+      <ul class="sd-list">
         <li class="rv">Specialist finishing works for premium residential and commercial joinery</li>
         <li class="rv">High-skill detail work requiring craft and precision beyond standard trade</li>
         <li class="rv">Complex joinery integration requiring specialist technical knowledge</li>
@@ -544,78 +1070,78 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
     </div>
     <div>
       <div class="tag rv">When It's Used</div>
-      <p class="bt rv">Engaged on premium projects where the finish standard demands a level of skill and specialist knowledge beyond standard joinery installation — including high-end residential, luxury development, and design-led projects.</p>
+      <p class="body-txt rv">Engaged on premium projects where the finish standard demands a level of skill and specialist knowledge beyond standard joinery installation — including high-end residential, luxury development, and design-led projects.</p>
       <div class="tag rv" style="margin-top:2rem">Who It's For</div>
-      <p class="bt rv">Builders and developers on premium residential or luxury commercial projects. Architects requiring specialist capability to realise complex design intent. Clients who understand that exceptional outcomes are found in the detail.</p>
-      <div class="ib rv"><div class="ibl">Client Outcome</div><div class="ibb">Specialist joinery works delivered to the finish standard the project demands. Managed under TFP's quality framework — so the result reflects the brief, not just the minimum.</div></div>
+      <p class="body-txt rv">Builders and developers on premium residential or luxury commercial projects. Architects requiring specialist trade capability to realise complex design intent. Clients who understand that exceptional outcomes are found in the detail.</p>
+      <div class="info-box rv"><div class="info-label">Client Outcome</div><div class="info-body">Specialist joinery works delivered to the finish standard the project demands. Qualified independent specialists, managed under TFP's quality framework — so the result reflects the brief, not just the minimum.</div></div>
       <div style="margin-top:1.5rem" class="rv"><a href="#" class="btn-a" onclick="go('contact')"><span>Enquire About This Service</span></a></div>
     </div>
   </div></section>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fco">© 2025 The Filler Piece</div></footer>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('services')">← All Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fl-copy">© 2025 The Filler Piece</div></footer>
 </div>
 
-<!-- HOW WE WORK -->
+<!-- ══════════════════════ HOW WE WORK ══════════════════════ -->
 <div class="page" id="page-how">
-  <div class="ph"><div class="phg"></div><div><div class="tag">Our Process</div><h1 class="ph-h1">STRUCTURED.<br>GOVERNED.<br><em>ACCOUNTABLE.</em></h1></div></div>
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Our Process</div><h1 class="ph-h1">STRUCTURED.<br>GOVERNED.<br><em>ACCOUNTABLE.</em></h1></div></div>
   <section class="sec">
     <div class="split">
       <div>
         <div class="tag rv">The TFP Model</div>
         <h2 class="h2 rv" style="font-size:clamp(2rem,4vw,3.5rem)">How managed delivery <em>actually works</em></h2>
-        <p class="bt rv">The Filler Piece operates as a managed delivery partner that takes on full commercial responsibility for defined project outcomes — governed through structured quality, safety, and documentation frameworks.</p>
-        <p class="bt rv" style="margin-top:.8rem">Every project engagement follows a consistent process — ensuring governance, accountability, and documentation are embedded at every stage from scoping through to formal close-out.</p>
+        <p class="body-txt rv">The Filler Piece operates as a managed delivery partner — not a labour provider, not a broker. We take on commercial responsibility for defined project outcomes, engage vetted independent contractors to perform the work, and govern delivery through structured quality, safety, and documentation frameworks.</p>
+        <p class="body-txt rv" style="margin-top:.8rem">Every project engagement follows a consistent process — ensuring governance, accountability, and documentation are embedded at every stage from scoping through to formal close-out.</p>
       </div>
       <div>
-        <div class="ib rv" style="margin-top:0"><div class="ibl">What This Means for You</div><div class="ibb">You deal with one partner. One point of contact. One party accountable for delivery, quality, safety, and documentation. The complexity of site coordination and quality assurance is managed within TFP's framework — not transferred back to you.</div></div>
+        <div class="info-box rv" style="margin-top:0"><div class="info-label">What This Means for You</div><div class="info-body">You deal with one entity. One point of contact. One party accountable for delivery, quality, safety, and documentation. The complexity of contractor management, site coordination, and quality assurance is managed within TFP's framework — not transferred back to you.</div></div>
       </div>
     </div>
     <div style="margin-top:6rem">
       <div class="tag rv">Engagement Process</div>
-      <div class="tl">
-        <div class="tls rv"><div class="tln">Step 01</div><div class="tlh">Initial Enquiry & Project Scoping</div><div class="tlb">We begin every engagement with a structured scoping conversation — understanding your project requirements, programme constraints, quality expectations, and site-specific considerations before providing a formal proposal. No assumptions. No generic quoting.</div></div>
-        <div class="tls rv"><div class="tln">Step 02</div><div class="tlh">Proposal & Engagement Agreement</div><div class="tlb">A clear, documented proposal covering scope of works, deliverables, quality framework, WHS obligations, and commercial terms. The engagement agreement defines what TFP is responsible for — in plain, commercially sound language.</div></div>
-        <div class="tls rv"><div class="tln">Step 03</div><div class="tlh">Pre-Mobilisation Planning</div><div class="tlb">Prior to site commencement, we conduct a structured pre-mobilisation review — confirming site readiness, reviewing drawings and specifications, and establishing the quality and documentation framework for the project. Nothing goes to site without a plan.</div></div>
-        <div class="tls rv"><div class="tln">Step 04</div><div class="tlh">Managed Delivery</div><div class="tlb">TFP manages delivery with site oversight, program adherence, and in-progress quality reviews — with regular reporting that keeps you informed without burdening you with operational detail.</div></div>
-        <div class="tls rv"><div class="tln">Step 05</div><div class="tlh">Quality Review & Sign-Off</div><div class="tlb">At completion — or at defined project hold points — TFP conducts a formal quality review against the agreed scope and standard. Defects are documented, addressed, and re-verified before sign-off is provided. No rubber-stamping.</div></div>
-        <div class="tls rv" style="padding-bottom:0"><div class="tln">Step 06</div><div class="tlh">Close-Out & Documentation</div><div class="tlb">Full documentation of works performed, quality outcomes, and any rectification undertaken. A complete project record — suitable for contractual, warranty, and practical completion purposes.</div></div>
+      <div class="timeline">
+        <div class="tl-step rv"><div class="tl-n">Step 01</div><div class="tl-h">Initial Enquiry & Project Scoping</div><div class="tl-b">We begin every engagement with a structured scoping conversation. Understanding your project requirements, programme constraints, quality expectations, and site-specific considerations before providing a formal proposal. No assumptions. No generic quoting.</div></div>
+        <div class="tl-step rv"><div class="tl-n">Step 02</div><div class="tl-h">Proposal & Engagement Agreement</div><div class="tl-b">A clear, documented proposal covering scope of works, deliverables, quality framework, WHS obligations, and commercial terms. The engagement agreement defines what TFP is responsible for — in plain, commercially sound language.</div></div>
+        <div class="tl-step rv"><div class="tl-n">Step 03</div><div class="tl-h">Pre-Mobilisation Planning</div><div class="tl-b">Prior to site commencement, we conduct a structured pre-mobilisation review — confirming site readiness, reviewing drawings and specifications, and establishing the quality and documentation framework for the project. Nothing goes to site without a plan.</div></div>
+        <div class="tl-step rv"><div class="tl-n">Step 04</div><div class="tl-h">Managed Delivery</div><div class="tl-b">TFP coordinates and manages delivery through vetted independent contractors. We maintain site oversight, manage programme adherence, and conduct in-progress quality reviews — with regular reporting that keeps you informed without burdening you with operational detail.</div></div>
+        <div class="tl-step rv"><div class="tl-n">Step 05</div><div class="tl-h">Quality Review & Sign-Off</div><div class="tl-b">At completion — or at defined project hold points — TFP conducts a formal quality review against the agreed scope and standard. Defects are documented, addressed, and re-verified before sign-off is provided. No rubber-stamping.</div></div>
+        <div class="tl-step rv" style="padding-bottom:0"><div class="tl-n">Step 06</div><div class="tl-h">Close-Out & Documentation</div><div class="tl-b">Full documentation of works performed, quality outcomes, and any rectification undertaken. A complete project record — suitable for contractual, warranty, and practical completion purposes.</div></div>
       </div>
     </div>
   </section>
-  <div class="cta"><h2 class="cta-h">READY TO ENGAGE TFP?</h2><p class="cta-s">Start the conversation with a no-obligation scoping enquiry.</p><a href="#" class="btn-d" onclick="go('contact')">Submit an Enquiry</a></div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <div class="cta"><h2 class="cta-h">READY TO ENGAGE<br>TFP?</h2><p class="cta-sub">Start the conversation with a no-obligation scoping enquiry.</p><a href="#" class="btn-dark" onclick="go('contact')">Submit an Enquiry</a></div>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fl-copy">© 2025 The Filler Piece · Australia</div></footer>
 </div>
 
-<!-- WHO WE WORK WITH -->
+<!-- ══════════════════════ WHO WE WORK WITH ══════════════════════ -->
 <div class="page" id="page-who">
-  <div class="ph"><div class="phg"></div><div><div class="tag">Clients</div><h1 class="ph-h1">FOR THOSE WHO<br>CANNOT AFFORD<br>TO <em>GET IT WRONG</em></h1></div></div>
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Clients</div><h1 class="ph-h1">FOR THOSE WHO<br>CANNOT AFFORD<br>TO <em>GET IT WRONG</em></h1></div></div>
   <section class="sec">
-    <p class="bt rv" style="max-width:680px">The Filler Piece works with organisations and individuals for whom quality, accountability, and commercial risk management are non-negotiable.</p>
-    <div style="margin-top:4rem">
-      <div class="wr rv"><div><div class="wrt">Client 01</div><div class="wrh">JOINERY MANUFACTURERS</div></div><div><p class="bt">You've invested in the product. The risk doesn't end when it leaves your factory — it ends when it's installed correctly and signed off on site. TFP protects that investment by managing the installation process, ensuring your product is presented to the standard it was built to.</p><div class="ib" style="margin-top:1.5rem"><div class="ibl">What TFP Provides</div><div class="ibb">Managed installation coordination. Quality assurance aligned to your production standard. A single accountable partner protecting your product and brand on site.</div></div></div></div>
-      <div class="wr rv"><div><div class="wrt">Client 02</div><div class="wrh">BUILDERS & DEVELOPERS</div></div><div><p class="bt">Joinery is consistently one of the highest-risk trades for defect liability at practical completion. TFP reduces that exposure by managing the installation process, maintaining in-progress quality oversight, and providing evidence-based sign-off documentation.</p><div class="ib" style="margin-top:1.5rem"><div class="ibl">What TFP Provides</div><div class="ibb">Reduced defect liability exposure. Managed installation and remediation. Independent QA sign-off suitable for practical completion.</div></div></div></div>
-      <div class="wr rv"><div><div class="wrt">Client 03</div><div class="wrh">ARCHITECTS & PMS</div></div><div><p class="bt">Design intent is only realised if installation is managed with the same rigour applied to specification. TFP provides the bridge between design documentation and site reality — ensuring joinery is installed in conformance with drawings, tolerances, and the finish standard the design demands.</p><div class="ib" style="margin-top:1.5rem"><div class="ibl">What TFP Provides</div><div class="ibb">Conformance to design documentation. Independent audit reporting. One point of contact for installation and quality management.</div></div></div></div>
-      <div class="wr rv"><div><div class="wrt">Client 04</div><div class="wrh">RESIDENTIAL CLIENTS</div></div><div><p class="bt">For premium residential projects, joinery is often the single most visible expression of quality in the home. TFP's artisan and managed installation services provide access to specialist delivery capability that reflects the investment being made in the build.</p><div class="ib" style="margin-top:1.5rem"><div class="ibl">What TFP Provides</div><div class="ibb">Specialist installation and finishing for premium residential joinery. Quality assurance throughout. A managed delivery experience appropriate to the standard of the project.</div></div></div></div>
+    <p class="body-txt rv" style="max-width:680px">The Filler Piece works with organisations and individuals for whom quality, accountability, and commercial risk management are non-negotiable. We are a delivery partner for those who understand the value of getting it right the first time.</p>
+    <div class="who-rows">
+      <div class="who-row rv"><div><div class="who-tag-small">Client 01</div><div class="who-h">JOINERY MANUFACTURERS</div></div><div><p class="body-txt">You've invested in the product. The risk doesn't end when it leaves your factory — it ends when it's installed correctly and signed off on site. TFP protects that investment by managing the installation interface, ensuring your product is presented to the standard it was built to.</p><div class="info-box" style="margin-top:1.5rem"><div class="info-label">What TFP Provides</div><div class="info-body">Managed installation coordination. Quality assurance aligned to your production standard. A single accountable partner protecting your product and brand on site.</div></div></div></div>
+      <div class="who-row rv"><div><div class="who-tag-small">Client 02</div><div class="who-h">BUILDERS & DEVELOPERS</div></div><div><p class="body-txt">Joinery is consistently one of the highest-risk trades for defect liability at practical completion. TFP reduces that exposure by managing the installation interface, maintaining in-progress quality oversight, and providing evidence-based sign-off documentation.</p><div class="info-box" style="margin-top:1.5rem"><div class="info-label">What TFP Provides</div><div class="info-body">Reduced defect liability exposure. Managed installation and remediation. Independent QA sign-off suitable for practical completion.</div></div></div></div>
+      <div class="who-row rv"><div><div class="who-tag-small">Client 03</div><div class="who-h">ARCHITECTS & PMS</div></div><div><p class="body-txt">Design intent is only realised if installation is managed with the same rigour applied to specification. TFP provides the interface between design documentation and site reality — ensuring joinery is installed in conformance with drawings, tolerances, and the finish standard the design demands.</p><div class="info-box" style="margin-top:1.5rem"><div class="info-label">What TFP Provides</div><div class="info-body">Conformance to design documentation. Independent audit reporting. One point of contact for installation and quality management.</div></div></div></div>
+      <div class="who-row rv"><div><div class="who-tag-small">Client 04</div><div class="who-h">RESIDENTIAL CLIENTS</div></div><div><p class="body-txt">For premium residential projects, joinery is often the single most visible expression of quality in the home. TFP's artisan and managed installation services provide access to specialist delivery capability that reflects the investment being made in the build.</p><div class="info-box" style="margin-top:1.5rem"><div class="info-label">What TFP Provides</div><div class="info-body">Specialist installation and finishing for premium residential joinery. Quality assurance throughout. A managed delivery experience appropriate to the standard of the project.</div></div></div></div>
     </div>
   </section>
-  <div class="cta"><h2 class="cta-h">FIND OUT WHAT TFP<br>CAN DO FOR YOU.</h2><p class="cta-s">Submit a project enquiry and we'll respond with a scoping discussion.</p><a href="#" class="btn-d" onclick="go('contact')">Contact TFP</a></div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <div class="cta"><h2 class="cta-h">FIND OUT WHAT TFP<br>CAN DO FOR YOU.</h2><p class="cta-sub">Submit a project enquiry and we'll respond with a scoping discussion.</p><a href="#" class="btn-dark" onclick="go('contact')">Contact TFP</a></div>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fl-copy">© 2025 The Filler Piece · Australia</div></footer>
 </div>
 
-<!-- CONTACT -->
+<!-- ══════════════════════ CONTACT ══════════════════════ -->
 <div class="page" id="page-contact">
-  <div class="ph"><div class="phg"></div><div><div class="tag">Contact</div><h1 class="ph-h1">START THE<br><em>CONVERSATION.</em></h1></div></div>
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Contact</div><h1 class="ph-h1">START THE<br><em>CONVERSATION.</em></h1></div></div>
   <section class="sec">
-    <p class="bt rv">Submit your enquiry below and a TFP team member will follow up within one business day.</p>
-    <div class="ctg">
-      <div class="ctf">
-        <form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="enq-form">
+    <p class="body-txt rv">TFP works with clients who have a clear requirement and a project that matters. Our AI assistant will respond to your enquiry immediately — then a TFP team member will follow up within one business day.</p>
+    <div class="ct-grid">
+      <div class="ct-form">
+        <form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="enquiry-form">
           <input type="hidden" name="form-name" value="enquiry"/>
           <p style="display:none"><input name="bot-field"/></p>
-          <div class="fr">
+          <div class="frow">
             <div class="fg rv"><label class="fl">Full Name</label><input class="fi" type="text" id="fn" name="name" placeholder="Your full name" required/></div>
             <div class="fg rv"><label class="fl">Organisation</label><input class="fi" type="text" id="fo" name="organisation" placeholder="Company or trading name"/></div>
           </div>
-          <div class="fr">
+          <div class="frow">
             <div class="fg rv"><label class="fl">Email Address</label><input class="fi" type="email" id="fe" name="email" placeholder="your@email.com" required/></div>
             <div class="fg rv"><label class="fl">Phone Number</label><input class="fi" type="tel" id="fp" name="phone" placeholder="Australian number"/></div>
           </div>
@@ -630,65 +1156,36 @@ footer{background:var(--black);border-top:1px solid rgba(195,157,56,.1);padding:
               <option>Multiple services / unsure</option>
             </select>
           </div>
-          <div class="fg rv"><label class="fl">Project Overview</label><textarea class="fta" id="fm" name="message" placeholder="Briefly describe your project, location, and timeframe…" required></textarea></div>
-          <button type="button" class="fsb rv" onclick="submitForm()"><span class="fsbs" id="sbtxt">Submit Enquiry</span></button>
+          <div class="fg rv">
+            <label class="fl">Project Overview</label>
+            <textarea class="fta" id="fm" name="message" placeholder="Briefly describe your project, location, and timeframe…" required></textarea>
+          </div>
+          <button type="button" class="fsub rv" onclick="sendEnquiry()"><span class="fsub-span" id="sbtxt">Submit Enquiry</span></button>
+          <div class="ai-box" id="ai-box">
+            <div class="ai-label">✦ TFP AI Assistant</div>
+            <div class="ai-body" id="ai-body"><div class="dots"><span></span><span></span><span></span></div>
+          </div>
         </form>
-        <div class="fsuc" id="fsuc"><div class="fsul">✦ Enquiry Received</div><div class="fsub" id="fsub"></div></div>
+        <div id="form-success" style="display:none;padding:2rem;background:var(--off-black);border:1px solid rgba(195,157,56,.15);border-left:2px solid var(--gold);margin-top:1.5rem">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem">✦ Enquiry Received</div>
+          <div style="font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)" id="success-msg"></div>
+        </div>
       </div>
-      <div class="cti">
-        <div class="rv"><div class="ci-l">Location</div><div class="ci-v">NSW, Australia</div></div>
-        <div class="rv"><div class="ci-l">Response Time</div><div class="ci-v">A TFP team member will follow up within one business day to arrange a scoping conversation.</div></div>
+      <div class="ct-info">
+        <div class="rv"><div class="ci-l">Location</div><div class="ci-v">Australia</div></div>
+        <div class="rv"><div class="ci-l">Response Time</div><div class="ci-v">Our AI assistant responds immediately. A TFP team member will follow up within one business day to arrange a scoping conversation.</div></div>
         <div class="rv"><div class="ci-l">What to Expect</div><div class="ci-v">Following your enquiry, TFP will contact you to arrange a brief scoping conversation. This allows us to understand your project and confirm whether we are the right fit before any formal proposal is provided.</div></div>
+        
       </div>
     </div>
   </section>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
+  <footer><div class="fl-logo">The <span>Filler</span> Piece</div><ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li></ul><div class="fl-copy">© 2025 The Filler Piece · Australia</div></footer>
 </div>
 
-<!-- PRIVACY POLICY -->
-<div class="page" id="page-privacy">
-  <div class="ph"><div class="phg"></div><div><div class="tag">Legal</div><h1 class="ph-h1">PRIVACY<br><em>POLICY</em></h1></div></div>
-  <div class="priv-sec">
-    <div class="tag rv">The Filler Piece Pty Ltd</div>
-    <p class="bt rv" style="margin-bottom:2rem">Version 1.0 — 14 April 2026 &nbsp;|&nbsp; info@thefillerpiece.com &nbsp;|&nbsp; PO Box 672 Concord NSW, Australia</p>
-    <h3 class="priv-h rv">1.0 Purpose and Intent</h3>
-    <p class="bt rv">This Privacy Policy establishes the framework by which The Filler Piece Pty Ltd collects, holds, uses, and discloses personal information in the course of its business operations. The intent is to ensure all personal information is managed lawfully, transparently, and with respect for the privacy rights of individuals, in accordance with the Australian Privacy Principles and all applicable privacy legislation.</p>
-    <h3 class="priv-h rv">2.0 Statutory Compliance</h3>
-    <p class="bt rv">This Policy is issued in compliance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs). It supports compliance with the Spam Act 2003 (Cth). The Filler Piece complies with the Notifiable Data Breaches (NDB) Scheme under Part IIIC of the Privacy Act 1988 (Cth). Where a data breach is likely to result in serious harm, TFP will contain and assess the breach, notify affected individuals, and notify the Office of the Australian Information Commissioner (OAIC).</p>
-    <h3 class="priv-h rv">3.0 Definitions</h3>
-    <p class="bt rv">The Filler Piece / TFP means The Filler Piece Pty Ltd including its business operations. Personal Information has the meaning given in the Privacy Act 1988 (Cth). Client means any builder, joiner, developer, or other party who engages TFP to perform or manage works. Website means thefillerpiece.com.</p>
-    <h3 class="priv-h rv">4.0 Scope and Application</h3>
-    <p class="bt rv">This Policy applies to all personal information collected, held, used, and disclosed by The Filler Piece Pty Ltd regardless of the medium in which it is held. It applies to all personnel, service providers, clients, builders, and visitors to the Website who submit enquiries or contact forms.</p>
-    <h3 class="priv-h rv">5.0 Personal Information We Collect</h3>
-    <p class="bt rv">TFP collects: contact and identity information (names, addresses, email, phone); licensing and compliance information (ABN, licence numbers, insurance details); financial information (bank account details, payment information); engagement records; work health and safety records; site photography and video; and website visitor information submitted through contact forms. TFP does not collect sensitive information as defined under the Privacy Act 1988 (Cth) as part of its ordinary business operations.</p>
-    <h3 class="priv-h rv">6.0 How We Collect Personal Information</h3>
-    <p class="bt rv">TFP collects personal information directly from individuals wherever reasonably practicable — through company forms, contracts, and induction documents; direct communication including email and telephone; submission of enquiries through the Website; provision of credentials by service providers; and site-based activities including photography and evidence records.</p>
-    <h3 class="priv-h rv">7.0 Why We Collect Personal Information</h3>
-    <p class="bt rv">TFP collects personal information to manage engagement relationships; verify licensing, insurance, and compliance credentials; process invoices, payments, and financial transactions; manage project activities, scope documentation, and quality assurance; meet WHS obligations; communicate with clients and business contacts; respond to Website enquiries; and comply with legal, regulatory, and contractual obligations.</p>
-    <h3 class="priv-h rv">8.0 Storage and Security</h3>
-    <p class="bt rv">TFP takes reasonable steps to protect personal information from misuse, interference, loss, unauthorised access, modification, and disclosure through controlled access permissions, password protection, multi-factor authentication, encrypted transmission, and restricted physical access. Personal information will be retained for the minimum period required by law and legitimate business need, then securely destroyed or de-identified. Some third-party platforms used by TFP (including Microsoft 365) may store data on servers located outside Australia. TFP takes reasonable steps to ensure appropriate safeguards apply.</p>
-    <h3 class="priv-h rv">9.0 Policy Updates</h3>
-    <p class="bt rv">This Privacy Policy may be updated from time to time. The most current version will be published on the Website. Continued use of the Website constitutes acknowledgement of the current version of this Policy.</p>
-    <h3 class="priv-h rv">10.0 Disclosure to Third Parties</h3>
-    <p class="bt rv">TFP does not sell, trade, or rent personal information to any third party for commercial purposes. TFP may disclose personal information to accountants, insurers, technology and platform providers, regulatory authorities, and legal advisers where necessary for business operations or required by law.</p>
-    <h3 class="priv-h rv">11.0 Website, Cookies and Analytics</h3>
-    <p class="bt rv">The Website may collect personal information submitted through contact forms. The Website may use cookies and third-party analytics tools (including Google Analytics) to collect aggregated, non-personally identifiable data. Visitors may configure their browser to refuse cookies. The Website is not directed at children under 18.</p>
-    <h3 class="priv-h rv">12.0 Direct Marketing</h3>
-    <p class="bt rv">TFP may use contact information to send communications about its services where the individual has provided their details in connection with a business relationship. All electronic marketing will comply with the Spam Act 2003 (Cth). Individuals may opt out at any time by contacting info@thefillerpiece.com.</p>
-    <h3 class="priv-h rv">13.0 Access and Correction</h3>
-    <p class="bt rv">Individuals have the right to request access to personal information TFP holds about them and to request correction of inaccurate information. Requests must be submitted in writing to info@thefillerpiece.com. TFP will respond within a reasonable time in accordance with the Privacy Act 1988 (Cth).</p>
-    <h3 class="priv-h rv">14.0 Complaints and Enquiries</h3>
-    <p class="bt rv">Any person who believes TFP has breached its privacy obligations may submit a complaint in writing to info@thefillerpiece.com. TFP will acknowledge receipt within a reasonable time and provide a written response within 30 days. Where a complaint cannot be resolved, the individual may escalate to the Office of the Australian Information Commissioner (OAIC).</p>
-    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(195,157,56,.15)" class="rv">
-      <p style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white-dim)">The Filler Piece Pty Ltd &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; 14 April 2026 &nbsp;·&nbsp; <a href="mailto:info@thefillerpiece.com" style="color:var(--gold)">info@thefillerpiece.com</a></p>
-    </div>
-  </div>
-  <footer><div class="flo"><img src="logo.png" alt="TFP"/>The <span>Filler</span> Piece</div><ul class="fli"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul><div class="fco">© 2025 The Filler Piece · Australia</div></footer>
-</div>
-
+<!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ROUTING */
+/* ── ROUTING ── */
 function go(id){
   const pt=document.getElementById('pt');
   pt.style.transition='clip-path .5s cubic-bezier(0.16,1,0.3,1)';
@@ -703,43 +1200,53 @@ function go(id){
   },480);
 }
 
-/* MOBILE MENU */
+/* ── MOBILE MENU ── */
 let mobOpen=false;
 function openMob(){mobOpen=true;document.getElementById('mob').classList.add('open');document.getElementById('burger').classList.add('open')}
 function closeMob(){mobOpen=false;document.getElementById('mob').classList.remove('open');document.getElementById('burger').classList.remove('open')}
 
-/* NAV SCROLL */
+/* ── NAV SCROLL ── */
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('stuck',window.scrollY>50)});
 
-/* CURSOR */
-const cd=document.getElementById('cd'),cr=document.getElementById('cr'),cl=document.getElementById('cl');
+/* ── CURSOR ── */
+const cd=document.getElementById('c-dot'),cr=document.getElementById('c-ring'),cl=document.getElementById('c-label');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px'});
-(function ac(){rx+=(mx-rx)*.09;ry+=(my-ry)*.09;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(ac)})();
+(function animC(){rx+=(mx-rx)*.09;ry+=(my-ry)*.09;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(animC)})();
+
 document.querySelectorAll('[data-cursor]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cl.textContent=el.dataset.cursor;document.body.classList.add('chov')});
-  el.addEventListener('mouseleave',()=>{document.body.classList.remove('chov');cl.textContent=''});
+  el.addEventListener('mouseenter',()=>{cl.textContent=el.dataset.cursor;document.body.classList.add('c-hover')});
+  el.addEventListener('mouseleave',()=>{document.body.classList.remove('c-hover');cl.textContent=''});
 });
 document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('clnk'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('clnk'));
+  el.addEventListener('mouseenter',()=>document.body.classList.add('c-link'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('c-link'));
 });
-document.querySelectorAll('.btn-a,.btn-d,.nc').forEach(el=>{
-  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.22}px)`});
+
+/* Magnetic buttons */
+document.querySelectorAll('.btn-a,.btn-dark,.nav-cta').forEach(el=>{
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)*.22;
+    const dy=(e.clientY-r.top-r.height/2)*.22;
+    el.style.transform=`translate(${dx}px,${dy}px)`;
+  });
   el.addEventListener('mouseleave',()=>el.style.transform='');
 });
 
-/* SCROLL REVEAL */
+/* ── SCROLL REVEAL ── */
 function initRv(){
-  const els=document.querySelectorAll('.page.active .rv:not(.in)');
-  const obs=new IntersectionObserver(ents=>{ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+  const els=document.querySelectorAll('.page.active .rv');
+  const obs=new IntersectionObserver(ents=>{
+    ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
+  },{threshold:.07,rootMargin:'0px 0px -30px 0px'});
   els.forEach(el=>obs.observe(el));
 }
 initRv();
 
-/* WEBGL */
+/* ── WEBGL PARTICLES ── */
 (function(){
-  const canvas=document.getElementById('bgc');
+  const canvas=document.getElementById('bg-canvas');
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.setSize(innerWidth,innerHeight);
@@ -747,50 +1254,150 @@ initRv();
   const scene=new THREE.Scene();
   const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,800);
   camera.position.z=28;
-  const N=2000,geo=new THREE.BufferGeometry(),pos=new Float32Array(N*3),sz=new Float32Array(N);
-  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*90;pos[i*3+2]=(Math.random()-.5)*70;sz[i]=Math.random()*1.8+.2}
+
+  const N=2200;
+  const geo=new THREE.BufferGeometry();
+  const pos=new Float32Array(N*3);
+  const sz=new Float32Array(N);
+  for(let i=0;i<N;i++){
+    pos[i*3]=(Math.random()-.5)*130;
+    pos[i*3+1]=(Math.random()-.5)*90;
+    pos[i*3+2]=(Math.random()-.5)*70;
+    sz[i]=Math.random()*1.8+.2;
+  }
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('size',new THREE.BufferAttribute(sz,1));
+
   const mat=new THREE.ShaderMaterial({
     transparent:true,depthWrite:false,
     uniforms:{uT:{value:0},uM:{value:new THREE.Vector2()},uC:{value:new THREE.Color(0xc39d38)}},
-    vertexShader:`attribute float size;uniform float uT;uniform vec2 uM;void main(){vec3 p=position;p.y+=sin(uT*.28+p.x*.04)*1.4;p.x+=cos(uT*.18+p.y*.035)*.9;float d=length(p.xy-uM*45.);p.z+=smoothstep(10.,0.,d)*4.;vec4 mv=modelViewMatrix*vec4(p,1.);gl_PointSize=size*(260./-mv.z);gl_Position=projectionMatrix*mv;}`,
-    fragmentShader:`uniform vec3 uC;void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;gl_FragColor=vec4(uC,(.5-d)*1.1*.45);}`
+    vertexShader:`
+      attribute float size;uniform float uT;uniform vec2 uM;
+      void main(){
+        vec3 p=position;
+        p.y+=sin(uT*.28+p.x*.04)*1.4;
+        p.x+=cos(uT*.18+p.y*.035)*.9;
+        float d=length(p.xy-uM*45.);
+        p.z+=smoothstep(10.,0.,d)*4.;
+        vec4 mv=modelViewMatrix*vec4(p,1.);
+        gl_PointSize=size*(260./-mv.z);
+        gl_Position=projectionMatrix*mv;
+      }`,
+    fragmentShader:`
+      uniform vec3 uC;
+      void main(){
+        float d=length(gl_PointCoord-.5);
+        if(d>.5)discard;
+        gl_FragColor=vec4(uC,(.5-d)*1.1*.5);
+      }`
   });
+
   scene.add(new THREE.Points(geo,mat));
   let mouse={x:0,y:0};
   document.addEventListener('mousemove',e=>{mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1});
   window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+
   let t=0;
-  (function anim(){requestAnimationFrame(anim);t+=.007;mat.uniforms.uT.value=t;mat.uniforms.uM.value.set(mouse.x,mouse.y);scene.children[0].rotation.y=t*.035;scene.children[0].rotation.x=Math.sin(t*.025)*.06;camera.position.x+=(mouse.x*2.5-camera.position.x)*.035;camera.position.y+=(mouse.y*1.8-camera.position.y)*.035;camera.lookAt(scene.position);renderer.render(scene,camera)})();
+  (function anim(){
+    requestAnimationFrame(anim);t+=.007;
+    mat.uniforms.uT.value=t;
+    mat.uniforms.uM.value.set(mouse.x,mouse.y);
+    scene.children[0].rotation.y=t*.035;
+    scene.children[0].rotation.x=Math.sin(t*.025)*.06;
+    camera.position.x+=(mouse.x*2.5-camera.position.x)*.035;
+    camera.position.y+=(mouse.y*1.8-camera.position.y)*.035;
+    camera.lookAt(scene.position);
+    renderer.render(scene,camera);
+  })();
 })();
 
-/* FORM */
-async function submitForm(){
+/* ── AI CONTACT FORM ── */
+async function sendEnquiry(){
   const name=document.getElementById('fn').value.trim();
+  const org=document.getElementById('fo').value.trim();
   const email=document.getElementById('fe').value.trim();
+  const service=document.getElementById('fs').value;
   const msg=document.getElementById('fm').value.trim();
   if(!name||!email||!msg){alert('Please fill in your name, email, and project overview.');return}
-  const btn=document.querySelector('.fsb');
+  const btn=document.querySelector('.fsub');
   const sbtxt=document.getElementById('sbtxt');
   btn.disabled=true;sbtxt.textContent='Sending…';
   try{
-    const fd=new FormData();
-    fd.append('form-name','enquiry');
-    fd.append('name',name);
-    fd.append('organisation',document.getElementById('fo').value.trim());
-    fd.append('email',email);
-    fd.append('phone',document.getElementById('fp').value.trim());
-    fd.append('service',document.getElementById('fs').value);
-    fd.append('message',msg);
-    await fetch('/',{method:'POST',body:fd});
-  }catch(e){console.log(e)}
+    const formData=new FormData();
+    formData.append('form-name','enquiry');
+    formData.append('name',name);
+    formData.append('organisation',org);
+    formData.append('email',email);
+    formData.append('phone',document.getElementById('fp').value.trim());
+    formData.append('service',service);
+    formData.append('message',msg);
+    await fetch('/',{method:'POST',body:formData});
+  }catch(e){console.log('Form error:',e)}
   sbtxt.textContent='Enquiry Sent ✓';
   btn.style.background='var(--charcoal)';btn.style.color='var(--gold)';
-  const suc=document.getElementById('fsuc');
-  suc.style.display='block';
-  document.getElementById('fsub').textContent='Thank you, '+name+'. Your enquiry has been received. A TFP team member will be in touch within one business day.';
+  document.getElementById('form-success').style.display='block';
+  document.getElementById('success-msg').textContent='Thank you, '+name+'. Your enquiry has been received. A TFP team member will be in touch within one business day.';
 }
 </script>
+
+<!-- ══════════════════════ PRIVACY POLICY ══════════════════════ -->
+<div class="page" id="page-privacy">
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Legal</div><h1 class="ph-h1">PRIVACY<br><em>POLICY</em></h1></div></div>
+  <section class="sec" style="max-width:860px;margin:0 auto">
+    <div class="tag rv">The Filler Piece Pty Ltd</div>
+    <p class="body-txt rv" style="margin-bottom:2rem">Version 1.0 — 14 April 2026 &nbsp;|&nbsp; info@thefillerpiece.com &nbsp;|&nbsp; PO Box 672 Concord NSW, Australia</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">1.0 Purpose and Intent</h3>
+    <p class="body-txt rv">This Privacy Policy establishes the framework by which The Filler Piece Pty Ltd collects, holds, uses, and discloses personal information in the course of its business operations. The intent of this Policy is to ensure that all personal information handled by The Filler Piece Pty Ltd is managed lawfully, transparently, and with respect for the privacy rights of individuals. The Filler Piece Pty Ltd is committed to handling personal information in accordance with the Australian Privacy Principles and all applicable privacy legislation.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">2.0 Statutory Compliance</h3>
+    <p class="body-txt rv">This Policy is issued in compliance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs). It supports compliance with the Spam Act 2003 (Cth) and any other Australian law that imposes privacy, confidentiality, or data protection obligations relevant to TFP's operations. The Filler Piece complies with the Notifiable Data Breaches (NDB) Scheme under Part IIIC of the Privacy Act 1988 (Cth). Where a data breach involving personal information is likely to result in serious harm, TFP will contain and assess the breach, notify affected individuals as soon as practicable, and notify the Office of the Australian Information Commissioner (OAIC).</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">3.0 Definitions</h3>
+    <p class="body-txt rv">The Filler Piece / TFP means The Filler Piece Pty Ltd including its business operations. Personal Information has the meaning given in the Privacy Act 1988 (Cth). Independent Contractor means an individual or entity engaged by TFP under a commercial contract for services, operating their own business. Client means any builder, joiner, developer, or other party who engages TFP to perform or manage works. Website means thefillerpiece.com.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">4.0 Scope and Application</h3>
+    <p class="body-txt rv">This Policy applies to all personal information collected, held, used, and disclosed by The Filler Piece Pty Ltd regardless of the medium in which it is held. It applies to all Internal Personnel, independent contractors, Service Providers, clients, builders, and visitors to the Website who submit enquiries or contact forms.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">5.0 Personal Information We Collect</h3>
+    <p class="body-txt rv">TFP collects: contact and identity information (names, addresses, email, phone); licensing and compliance information (ABN, licence numbers, insurance details, induction card numbers); financial information (bank account details, payment information); engagement records; work health and safety records; site photography and video; and website visitor information submitted through contact forms. TFP does not collect sensitive information as defined under the Privacy Act 1988 (Cth) as part of its ordinary business operations.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">6.0 How We Collect Personal Information</h3>
+    <p class="body-txt rv">TFP collects personal information directly from individuals wherever reasonably practicable — through company forms, contracts, and induction documents; direct communication including email and telephone; submission of enquiries through the Website; provision of credentials by Service Providers; and site-based activities including photography and evidence records.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">7.0 Why We Collect Personal Information</h3>
+    <p class="body-txt rv">TFP collects personal information to manage engagement and employment relationships; verify licensing, insurance, and compliance credentials; process invoices, payments, and financial transactions; manage project activities, scope documentation, and quality assurance; meet WHS obligations; communicate with clients and business contacts; respond to Website enquiries; and comply with legal, regulatory, and contractual obligations.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">8.0 Storage and Security</h3>
+    <p class="body-txt rv">TFP takes reasonable steps to protect personal information from misuse, interference, loss, unauthorised access, modification, and disclosure through controlled access permissions, password protection, multi-factor authentication, encrypted transmission, and restricted physical access. Personal information will be retained for the minimum period required by law and legitimate business need, then securely destroyed or de-identified. Some third-party platforms used by TFP (including Microsoft 365) may store data on servers located outside Australia. TFP takes reasonable steps to ensure appropriate safeguards apply.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">9.0 Policy Updates</h3>
+    <p class="body-txt rv">This Privacy Policy may be updated from time to time to reflect changes in legislation, business practices, or privacy risks. The most current version will be published on the Website. Continued engagement with TFP, including continued use of the Website, constitutes acknowledgement of the current version of this Policy.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">10.0 Disclosure to Third Parties</h3>
+    <p class="body-txt rv">TFP does not sell, trade, or rent personal information to any third party for commercial purposes. TFP may disclose personal information to accountants and bookkeepers, insurers, technology and platform providers, regulatory authorities, and legal advisers where necessary for business operations or required by law.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">11.0 Website, Cookies and Analytics</h3>
+    <p class="body-txt rv">The Website may collect personal information submitted through contact forms. The Website may use cookies and third-party analytics tools (including Google Analytics) to collect aggregated, non-personally identifiable data regarding Website usage. Visitors may configure their browser to refuse cookies, though this may affect Website functionality. The Website is not directed at children under 18.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">12.0 Direct Marketing</h3>
+    <p class="body-txt rv">TFP may use contact information to send communications about its services where the individual has provided their details in connection with a business relationship. All electronic marketing will comply with the Spam Act 2003 (Cth). Individuals may opt out at any time by contacting info@thefillerpiece.com.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">13.0 Access and Correction</h3>
+    <p class="body-txt rv">Individuals have the right to request access to personal information TFP holds about them and to request correction of inaccurate information. Requests must be submitted in writing to info@thefillerpiece.com. TFP will respond within a reasonable time in accordance with the Privacy Act 1988 (Cth).</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">14.0 Complaints and Enquiries</h3>
+    <p class="body-txt rv">Any person who believes TFP has breached its privacy obligations may submit a complaint in writing to info@thefillerpiece.com. TFP will acknowledge receipt within a reasonable time and provide a written response within 30 days. Where a complaint cannot be resolved, the individual may escalate to the Office of the Australian Information Commissioner (OAIC).</p>
+
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(195,157,56,.15)" class="rv">
+      <p style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white-dim)">The Filler Piece Pty Ltd &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; 14 April 2026 &nbsp;·&nbsp; <a href="mailto:info@thefillerpiece.com" style="color:var(--gold)">info@thefillerpiece.com</a></p>
+    </div>
+  </section>
+  <footer>
+    <div class="fl-logo" style="display:flex;align-items:center;gap:.8rem"><img src="logo.jpg" alt="TFP" style="height:32px;width:32px;border-radius:50%;object-fit:cover"/>The <span style="color:var(--gold)">Filler</span> Piece</div>
+    <ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul>
+    <div class="fl-copy">© 2025 The Filler Piece · Australia</div>
+  </footer>
+</div>
 </body>
 </html>
