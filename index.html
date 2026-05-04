@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Filler Piece — Managed Joinery Delivery</title>
-<meta name="description" content="The Filler Piece. One accountable partner. Site to sign-off."/>
+<meta name="description" content="The Filler Piece. One accountable interface. Site to sign-off."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
 <style>
@@ -763,7 +763,6 @@ footer{
   .hero-h1{font-size:clamp(3.5rem,14vw,6rem)}
 }
 </style>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
@@ -781,6 +780,7 @@ footer{
   <a href="#" onclick="go('how');closeMob()">How We Work</a>
   <a href="#" onclick="go('who');closeMob()">Clients</a>
   <a href="#" onclick="go('contact');closeMob()">Contact</a>
+  <a href="#" onclick="go('privacy');closeMob()">Privacy Policy</a>
 </div>
 
 <!-- NAV -->
@@ -807,7 +807,7 @@ footer{
       <h1 class="hero-h1">
         <span class="line">ONE</span>
         <span class="line gold">ACCOUNTABLE</span>
-        <span class="line">PARTNER.</span>
+        <span class="line">INTERFACE.</span>
       </h1>
     </div>
     <div class="hero-bottom">
@@ -850,53 +850,6 @@ footer{
     </div>
   </div>
 
-  <!-- SERVICES BIG LIST -->
-  <section class="sec">
-    <div class="tag rv">Core Services</div>
-    <h2 class="h2 rv">Precision at every<br>stage of the <em>lifecycle</em></h2>
-    <div class="svc-list-wrap">
-      <div class="svc-row rv" data-cursor="View">
-        <div class="svc-num">01</div>
-        <div>
-          <div class="svc-name">JOINERY<br>INSTALLATION</div>
-          <a href="#" class="svc-arrow" onclick="go('install')">View Service →</a>
-        </div>
-        <div class="svc-desc">End-to-end coordination of joinery installation with a single accountable interface. We manage site relationships, program adherence, and conformance — protecting manufacturers and builders from commencement through to sign-off.</div>
-      </div>
-      <div class="svc-row rv d1" data-cursor="View">
-        <div class="svc-num">02</div>
-        <div>
-          <div class="svc-name">QA<br>AUDITING</div>
-          <a href="#" class="svc-arrow" onclick="go('qa')">View Service →</a>
-        </div>
-        <div class="svc-desc">Independent quality audits during or post-installation. Evidence-based defect identification, compliance reporting, and formal sign-off aligned to drawings, scopes, and project requirements.</div>
-      </div>
-      <div class="svc-row rv d2" data-cursor="View">
-        <div class="svc-num">03</div>
-        <div>
-          <div class="svc-name">JOINERY<br>REMEDIATION</div>
-          <a href="#" class="svc-arrow" onclick="go('remediation')">View Service →</a>
-        </div>
-        <div class="svc-desc">Targeted rectification of non-conforming joinery works. We protect project timelines and reduce rework cost while restoring full conformance — without unnecessary full removal where achievable.</div>
-      </div>
-      <div class="svc-row rv d3" data-cursor="View">
-        <div class="svc-num">04</div>
-        <div>
-          <div class="svc-name">ARTISAN<br>SERVICES</div>
-          <a href="#" class="svc-arrow" onclick="go('artisan')">View Service →</a>
-        </div>
-        <div class="svc-desc">Specialist finishing and high-skill joinery works for premium and complex projects, delivered through qualified independent specialists whose output reflects the standard the project demands.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COLOUR CODED SERVICES -->
-  <div class="colour-strip rv">
-    <div class="cs-item cs-1 rv"><div class="cs-num">01</div><div><div class="cs-accent"></div><div class="cs-label">Installation</div></div></div>
-    <div class="cs-item cs-2 rv d1"><div class="cs-num">02</div><div><div class="cs-accent" style="background:var(--lime)"></div><div class="cs-label">QA Auditing</div></div></div>
-    <div class="cs-item cs-3 rv d2"><div class="cs-num">03</div><div><div class="cs-accent" style="background:var(--purple)"></div><div class="cs-label">Remediation</div></div></div>
-    <div class="cs-item cs-4 rv d3"><div class="cs-num">04</div><div><div class="cs-accent" style="background:var(--gold-mid)"></div><div class="cs-label">Artisan Works</div></div></div>
-  </div>
 
   <!-- WHY TFP -->
   <section class="sec sec-dark">
@@ -950,7 +903,7 @@ footer{
 
   <footer>
     <div class="fl-logo">The <span>Filler</span> Piece</div>
-    <ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul>
+    <ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('about')">About</a></li><li><a href="#" onclick="go('services')">Services</a></li><li><a href="#" onclick="go('contact')">Contact</a></li><li><a href="#" onclick="go('privacy')">Privacy Policy</a></li></ul>
     <div class="fl-copy">© 2025 The Filler Piece · Australia</div>
   </footer>
 </div>
@@ -1181,40 +1134,48 @@ footer{
     <p class="body-txt rv">TFP works with clients who have a clear requirement and a project that matters. Our AI assistant will respond to your enquiry immediately — then a TFP team member will follow up within one business day.</p>
     <div class="ct-grid">
       <div class="ct-form">
-        <div class="frow">
-          <div class="fg rv"><label class="fl">Full Name</label><input class="fi" type="text" id="fn" placeholder="Your full name"/></div>
-          <div class="fg rv"><label class="fl">Organisation</label><input class="fi" type="text" id="fo" placeholder="Company or trading name"/></div>
-        </div>
-        <div class="frow">
-          <div class="fg rv"><label class="fl">Email Address</label><input class="fi" type="email" id="fe" placeholder="your@email.com"/></div>
-          <div class="fg rv"><label class="fl">Phone Number</label><input class="fi" type="tel" id="fp" placeholder="Australian number"/></div>
-        </div>
-        <div class="fg rv">
-          <label class="fl">Service Required</label>
-          <select class="fsel" id="fs">
-            <option value="">Select a service</option>
-            <option>Joinery Installation</option>
-            <option>QA Auditing</option>
-            <option>Joinery Remediation</option>
-            <option>Artisan Services</option>
-            <option>Multiple services / unsure</option>
-          </select>
-        </div>
-        <div class="fg rv">
-          <label class="fl">Project Overview</label>
-          <textarea class="fta" id="fm" placeholder="Briefly describe your project, location, and timeframe…"></textarea>
-        </div>
-        <button class="fsub rv" onclick="sendEnquiry()"><span class="fsub-span" id="sbtxt">Submit Enquiry</span></button>
-        <div class="ai-box" id="ai-box">
-          <div class="ai-label">✦ TFP AI Assistant</div>
-          <div class="ai-body" id="ai-body"><div class="dots"><span></span><span></span><span></span></div></div>
+        <form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="enquiry-form">
+          <input type="hidden" name="form-name" value="enquiry"/>
+          <p style="display:none"><input name="bot-field"/></p>
+          <div class="frow">
+            <div class="fg rv"><label class="fl">Full Name</label><input class="fi" type="text" id="fn" name="name" placeholder="Your full name" required/></div>
+            <div class="fg rv"><label class="fl">Organisation</label><input class="fi" type="text" id="fo" name="organisation" placeholder="Company or trading name"/></div>
+          </div>
+          <div class="frow">
+            <div class="fg rv"><label class="fl">Email Address</label><input class="fi" type="email" id="fe" name="email" placeholder="your@email.com" required/></div>
+            <div class="fg rv"><label class="fl">Phone Number</label><input class="fi" type="tel" id="fp" name="phone" placeholder="Australian number"/></div>
+          </div>
+          <div class="fg rv">
+            <label class="fl">Service Required</label>
+            <select class="fsel" id="fs" name="service">
+              <option value="">Select a service</option>
+              <option>Joinery Installation</option>
+              <option>QA Auditing</option>
+              <option>Joinery Remediation</option>
+              <option>Artisan Services</option>
+              <option>Multiple services / unsure</option>
+            </select>
+          </div>
+          <div class="fg rv">
+            <label class="fl">Project Overview</label>
+            <textarea class="fta" id="fm" name="message" placeholder="Briefly describe your project, location, and timeframe…" required></textarea>
+          </div>
+          <button type="button" class="fsub rv" onclick="sendEnquiry()"><span class="fsub-span" id="sbtxt">Submit Enquiry</span></button>
+          <div class="ai-box" id="ai-box">
+            <div class="ai-label">✦ TFP AI Assistant</div>
+            <div class="ai-body" id="ai-body"><div class="dots"><span></span><span></span><span></span></div>
+          </div>
+        </form>
+        <div id="form-success" style="display:none;padding:2rem;background:var(--off-black);border:1px solid rgba(195,157,56,.15);border-left:2px solid var(--gold);margin-top:1.5rem">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem">✦ Enquiry Received</div>
+          <div style="font-size:.82rem;font-weight:400;line-height:1.85;color:var(--white-dim)" id="success-msg"></div>
         </div>
       </div>
       <div class="ct-info">
         <div class="rv"><div class="ci-l">Location</div><div class="ci-v">Australia</div></div>
         <div class="rv"><div class="ci-l">Response Time</div><div class="ci-v">Our AI assistant responds immediately. A TFP team member will follow up within one business day to arrange a scoping conversation.</div></div>
         <div class="rv"><div class="ci-l">What to Expect</div><div class="ci-v">Following your enquiry, TFP will contact you to arrange a brief scoping conversation. This allows us to understand your project and confirm whether we are the right fit before any formal proposal is provided.</div></div>
-        <div class="info-box rv"><div class="info-label">A note on how we engage</div><div class="info-body">TFP does not operate a traditional sales function. We do not chase work that isn't suited to our model. If your project aligns with what we do well, we'll tell you clearly. If it doesn't, we'll tell you that too.</div></div>
+        
       </div>
     </div>
   </section>
@@ -1361,25 +1322,82 @@ async function sendEnquiry(){
   const btn=document.querySelector('.fsub');
   const sbtxt=document.getElementById('sbtxt');
   btn.disabled=true;sbtxt.textContent='Sending…';
-  const box=document.getElementById('ai-box');
-  const body=document.getElementById('ai-body');
-  box.classList.add('on');
-  body.innerHTML='<div class="dots"><span></span><span></span><span></span></div>';
-  const prompt=`You are the professional AI assistant for The Filler Piece (TFP), an Australian managed joinery delivery and quality assurance partner. A new project enquiry has been submitted. Respond directly to the client — confident, commercially sharp, warm but not fluffy. Confirm receipt, acknowledge their specific service interest, and explain what happens next (a TFP team member will follow up within one business day for a scoping conversation). 3 short paragraphs maximum. No asterisks. No bullet points. No em-dashes for decoration.\n\nClient: ${name}\nOrganisation: ${org||'Not provided'}\nEmail: ${email}\nService: ${service||'Not specified'}\nProject: ${msg}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:380,messages:[{role:'user',content:prompt}]})
-    });
-    const data=await res.json();
-    body.textContent=data.content?.[0]?.text||`Thank you ${name}. Your enquiry has been received. A TFP team member will be in touch within one business day.`;
-  }catch{
-    body.textContent=`Thank you, ${name}. Your enquiry has been received and a TFP team member will be in touch within one business day to arrange a scoping conversation.`;
-  }
+    const formData=new FormData();
+    formData.append('form-name','enquiry');
+    formData.append('name',name);
+    formData.append('organisation',org);
+    formData.append('email',email);
+    formData.append('phone',document.getElementById('fp').value.trim());
+    formData.append('service',service);
+    formData.append('message',msg);
+    await fetch('/',{method:'POST',body:formData});
+  }catch(e){console.log('Form error:',e)}
   sbtxt.textContent='Enquiry Sent ✓';
   btn.style.background='var(--charcoal)';btn.style.color='var(--gold)';
+  document.getElementById('form-success').style.display='block';
+  document.getElementById('success-msg').textContent='Thank you, '+name+'. Your enquiry has been received. A TFP team member will be in touch within one business day.';
 }
 </script>
+
+<!-- ══════════════════════ PRIVACY POLICY ══════════════════════ -->
+<div class="page" id="page-privacy">
+  <div class="ph"><div class="ph-glow"></div><div><div class="tag">Legal</div><h1 class="ph-h1">PRIVACY<br><em>POLICY</em></h1></div></div>
+  <section class="sec" style="max-width:860px;margin:0 auto">
+    <div class="tag rv">The Filler Piece Pty Ltd</div>
+    <p class="body-txt rv" style="margin-bottom:2rem">Version 1.0 — 14 April 2026 &nbsp;|&nbsp; info@thefillerpiece.com &nbsp;|&nbsp; PO Box 672 Concord NSW, Australia</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">1.0 Purpose and Intent</h3>
+    <p class="body-txt rv">This Privacy Policy establishes the framework by which The Filler Piece Pty Ltd collects, holds, uses, and discloses personal information in the course of its business operations. The intent of this Policy is to ensure that all personal information handled by The Filler Piece Pty Ltd is managed lawfully, transparently, and with respect for the privacy rights of individuals. The Filler Piece Pty Ltd is committed to handling personal information in accordance with the Australian Privacy Principles and all applicable privacy legislation.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">2.0 Statutory Compliance</h3>
+    <p class="body-txt rv">This Policy is issued in compliance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs). It supports compliance with the Spam Act 2003 (Cth) and any other Australian law that imposes privacy, confidentiality, or data protection obligations relevant to TFP's operations. The Filler Piece complies with the Notifiable Data Breaches (NDB) Scheme under Part IIIC of the Privacy Act 1988 (Cth). Where a data breach involving personal information is likely to result in serious harm, TFP will contain and assess the breach, notify affected individuals as soon as practicable, and notify the Office of the Australian Information Commissioner (OAIC).</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">3.0 Definitions</h3>
+    <p class="body-txt rv">The Filler Piece / TFP means The Filler Piece Pty Ltd including its business operations. Personal Information has the meaning given in the Privacy Act 1988 (Cth). Independent Contractor means an individual or entity engaged by TFP under a commercial contract for services, operating their own business. Client means any builder, joiner, developer, or other party who engages TFP to perform or manage works. Website means thefillerpiece.com.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">4.0 Scope and Application</h3>
+    <p class="body-txt rv">This Policy applies to all personal information collected, held, used, and disclosed by The Filler Piece Pty Ltd regardless of the medium in which it is held. It applies to all Internal Personnel, independent contractors, Service Providers, clients, builders, and visitors to the Website who submit enquiries or contact forms.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">5.0 Personal Information We Collect</h3>
+    <p class="body-txt rv">TFP collects: contact and identity information (names, addresses, email, phone); licensing and compliance information (ABN, licence numbers, insurance details, induction card numbers); financial information (bank account details, payment information); engagement records; work health and safety records; site photography and video; and website visitor information submitted through contact forms. TFP does not collect sensitive information as defined under the Privacy Act 1988 (Cth) as part of its ordinary business operations.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">6.0 How We Collect Personal Information</h3>
+    <p class="body-txt rv">TFP collects personal information directly from individuals wherever reasonably practicable — through company forms, contracts, and induction documents; direct communication including email and telephone; submission of enquiries through the Website; provision of credentials by Service Providers; and site-based activities including photography and evidence records.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">7.0 Why We Collect Personal Information</h3>
+    <p class="body-txt rv">TFP collects personal information to manage engagement and employment relationships; verify licensing, insurance, and compliance credentials; process invoices, payments, and financial transactions; manage project activities, scope documentation, and quality assurance; meet WHS obligations; communicate with clients and business contacts; respond to Website enquiries; and comply with legal, regulatory, and contractual obligations.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">8.0 Storage and Security</h3>
+    <p class="body-txt rv">TFP takes reasonable steps to protect personal information from misuse, interference, loss, unauthorised access, modification, and disclosure through controlled access permissions, password protection, multi-factor authentication, encrypted transmission, and restricted physical access. Personal information will be retained for the minimum period required by law and legitimate business need, then securely destroyed or de-identified. Some third-party platforms used by TFP (including Microsoft 365) may store data on servers located outside Australia. TFP takes reasonable steps to ensure appropriate safeguards apply.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">9.0 Policy Updates</h3>
+    <p class="body-txt rv">This Privacy Policy may be updated from time to time to reflect changes in legislation, business practices, or privacy risks. The most current version will be published on the Website. Continued engagement with TFP, including continued use of the Website, constitutes acknowledgement of the current version of this Policy.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">10.0 Disclosure to Third Parties</h3>
+    <p class="body-txt rv">TFP does not sell, trade, or rent personal information to any third party for commercial purposes. TFP may disclose personal information to accountants and bookkeepers, insurers, technology and platform providers, regulatory authorities, and legal advisers where necessary for business operations or required by law.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">11.0 Website, Cookies and Analytics</h3>
+    <p class="body-txt rv">The Website may collect personal information submitted through contact forms. The Website may use cookies and third-party analytics tools (including Google Analytics) to collect aggregated, non-personally identifiable data regarding Website usage. Visitors may configure their browser to refuse cookies, though this may affect Website functionality. The Website is not directed at children under 18.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">12.0 Direct Marketing</h3>
+    <p class="body-txt rv">TFP may use contact information to send communications about its services where the individual has provided their details in connection with a business relationship. All electronic marketing will comply with the Spam Act 2003 (Cth). Individuals may opt out at any time by contacting info@thefillerpiece.com.</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">13.0 Access and Correction</h3>
+    <p class="body-txt rv">Individuals have the right to request access to personal information TFP holds about them and to request correction of inaccurate information. Requests must be submitted in writing to info@thefillerpiece.com. TFP will respond within a reasonable time in accordance with the Privacy Act 1988 (Cth).</p>
+
+    <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;margin:2.5rem 0 .8rem" class="rv">14.0 Complaints and Enquiries</h3>
+    <p class="body-txt rv">Any person who believes TFP has breached its privacy obligations may submit a complaint in writing to info@thefillerpiece.com. TFP will acknowledge receipt within a reasonable time and provide a written response within 30 days. Where a complaint cannot be resolved, the individual may escalate to the Office of the Australian Information Commissioner (OAIC).</p>
+
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(195,157,56,.15)" class="rv">
+      <p style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white-dim)">The Filler Piece Pty Ltd &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; 14 April 2026 &nbsp;·&nbsp; <a href="mailto:info@thefillerpiece.com" style="color:var(--gold)">info@thefillerpiece.com</a></p>
+    </div>
+  </section>
+  <footer>
+    <div class="fl-logo" style="display:flex;align-items:center;gap:.8rem"><img src="logo.jpg" alt="TFP" style="height:32px;width:32px;border-radius:50%;object-fit:cover"/>The <span style="color:var(--gold)">Filler</span> Piece</div>
+    <ul class="fl-links"><li><a href="#" onclick="go('home')">Home</a></li><li><a href="#" onclick="go('contact')">Contact</a></li></ul>
+    <div class="fl-copy">© 2025 The Filler Piece · Australia</div>
+  </footer>
+</div>
 </body>
 </html>
