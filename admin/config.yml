@@ -1,0 +1,85 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: false
+
+publish_mode: simple
+
+media_folder: "static/images"
+public_folder: "/static/images"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+
+      - name: "home"
+        label: "Home Page"
+        file: "_data/home.json"
+        fields:
+          - { label: "Hero Eyebrow Text", name: "hero_eyebrow", widget: "string", default: "Managed Joinery Delivery · Australia" }
+          - { label: "Hero Line 1", name: "hero_line1", widget: "string", default: "ONE" }
+          - { label: "Hero Line 2 (Gold)", name: "hero_line2", widget: "string", default: "ACCOUNTABLE" }
+          - { label: "Hero Line 3", name: "hero_line3", widget: "string", default: "INTERFACE." }
+          - { label: "Hero Description", name: "hero_desc", widget: "text", default: "The Filler Piece protects the brands of joinery manufacturers and builders — managing installation, QA, remediation, and specialist artisan works through a vetted independent contractor network. Site to sign-off." }
+          - { label: "CTA Button Text", name: "cta_text", widget: "string", default: "READY TO DE-RISK YOUR PROJECT?" }
+          - { label: "CTA Subtext", name: "cta_sub", widget: "string", default: "Speak with The Filler Piece about managed delivery, QA, and assurance for your programme." }
+
+      - name: "about"
+        label: "About Page"
+        file: "_data/about.json"
+        fields:
+          - { label: "Page Heading", name: "heading", widget: "string", default: "BUILT AROUND ACCOUNTABILITY, NOT SCALE." }
+          - { label: "Our Role Heading", name: "role_heading", widget: "string", default: "A managed delivery partner for a demanding industry" }
+          - { label: "Our Role Body (Paragraph 1)", name: "role_body1", widget: "text", default: "The Filler Piece was established to fill a specific and persistent gap in the commercial and residential joinery sector: the lack of a single, commercially mature partner capable of managing installation, quality assurance, and remediation under one accountable structure." }
+          - { label: "Our Role Body (Paragraph 2)", name: "role_body2", widget: "text", default: "We are not a labour hire agency. We do not operate as a subcontracting marketplace. We are a project-managed delivery partner — one that takes responsibility for outcomes, not just activity." }
+          - { label: "Our Role Body (Paragraph 3)", name: "role_body3", widget: "text", default: "Our model is built on managed engagement of vetted independent contractors, governed by documented quality and safety frameworks. We provide manufacturers, builders, and developers with the confidence that comes from having one entity responsible for what happens on site." }
+
+      - name: "contact"
+        label: "Contact Page"
+        file: "_data/contact.json"
+        fields:
+          - { label: "Page Heading", name: "heading", widget: "string", default: "START THE CONVERSATION." }
+          - { label: "Intro Text", name: "intro", widget: "text", default: "TFP works with clients who have a clear requirement and a project that matters. Our AI assistant will respond to your enquiry immediately — then a TFP team member will follow up within one business day." }
+          - { label: "Email Address", name: "email", widget: "string", default: "enquiries@thefillerpiece.com" }
+          - { label: "Phone Number", name: "phone", widget: "string", default: "" }
+          - { label: "Location", name: "location", widget: "string", default: "Australia" }
+          - { label: "Response Time Note", name: "response_time", widget: "text", default: "Our AI assistant responds immediately. A TFP team member will follow up within one business day to arrange a scoping conversation." }
+
+      - name: "services"
+        label: "Services"
+        file: "_data/services.json"
+        fields:
+          - label: "Installation Service"
+            name: "installation"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "JOINERY INSTALLATION" }
+              - { label: "Tagline", name: "tagline", widget: "string", default: "End-to-end managed installation coordination. One point of accountability from delivery to sign-off." }
+              - { label: "Description", name: "desc", widget: "text", default: "TFP coordinates and manages the complete joinery installation process on behalf of manufacturers and builders — engaging vetted independent contractors, managing site interfaces, and ensuring work is executed in conformance with drawings, specifications, and the project programme." }
+              - { label: "Outcome", name: "outcome", widget: "text", default: "A fully managed installation programme, delivered on programme, in conformance with specification, and supported by documentation that provides genuine evidence of quality. One entity accountable. Zero ambiguity." }
+          - label: "QA Auditing Service"
+            name: "qa"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "QA AUDITING" }
+              - { label: "Tagline", name: "tagline", widget: "string", default: "Independent quality audits — evidence-based, commercially structured, built around your sign-off requirements." }
+              - { label: "Description", name: "desc", widget: "text", default: "TFP conducts independent quality audits of joinery installation during the programme or following completion. Our audits are structured around your drawings, scope of works, tolerances, and project requirements." }
+              - { label: "Outcome", name: "outcome", widget: "text", default: "A complete, evidence-based quality audit report. Defects identified, documented, and referenced against specification. Confidence in the state of the works before sign-off is given — not after." }
+          - label: "Remediation Service"
+            name: "remediation"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "JOINERY REMEDIATION" }
+              - { label: "Tagline", name: "tagline", widget: "string", default: "Targeted rectification — protecting timelines and reducing rework cost without unnecessary disruption." }
+              - { label: "Description", name: "desc", widget: "text", default: "TFP manages remediation of non-conforming joinery works, from minor defect correction through to complex rectification programmes. Our approach prioritises targeted intervention." }
+              - { label: "Outcome", name: "outcome", widget: "text", default: "Non-conforming works rectified to specification. Timelines protected. Cost minimised through targeted, managed remediation. Full documentary evidence provided at close-out." }
+          - label: "Artisan Services"
+            name: "artisan"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "ARTISAN SERVICES" }
+              - { label: "Tagline", name: "tagline", widget: "string", default: "Specialist finishing and high-skill joinery works for premium and complex projects." }
+              - { label: "Description", name: "desc", widget: "text", default: "TFP's artisan services provide access to high-skill, specialist joinery-related works for projects where standard installation capability is insufficient." }
+              - { label: "Outcome", name: "outcome", widget: "text", default: "Specialist joinery works delivered to the finish standard the project demands. Qualified independent specialists, managed under TFP's quality framework." }
